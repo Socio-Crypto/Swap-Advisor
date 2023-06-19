@@ -1,0 +1,114 @@
+.theme .btn-primary {
+	background: #E84142
+}
+
+.theme .btn-primary:active,
+.theme .btn-primary:hover,
+.theme .btn-primary:focus {
+	background: #E84142
+}
+
+.theme .btn-primary.btn-simple {
+	border-color: #E84142;
+	color: #E84142;
+	background: transparent
+}
+
+.theme .page-loader-wrapper,
+.theme .active-bg {
+	background: rgb(24, 26, 32)
+}
+
+.theme .sidebar .menu .list li.active.open .active a {
+	color: black
+}
+
+.theme .sidebar .menu .list a:hover {
+	color: #e8ecf3
+}
+
+.theme .sidebar.h_menu .menu li.active.open>a {
+	color: #e0e6ef
+}
+
+.theme .sidebar.h_menu .menu li.active.open>a:before {
+	background: #f6f9fd
+}
+
+.theme .sidebar.h_menu .menu li a:hover:before {
+	background: #f0f2f5
+}
+
+.theme .checkbox input[type="checkbox"]:checked+label::after {
+	border-color: rgb(252, 213, 53);
+	background: rgb(252, 213, 53);
+	color: #fff
+}
+
+.theme .nav-tabs .nav-link.active {
+	border: 1px solid #E84142 !important;
+	background: #E84142;
+	color: #fff
+}
+
+/* .theme .card .header h2:before {
+	background: #E84142 
+} */
+
+.theme .card .header h2 strong {
+	color: black
+}
+
+.theme .card .header .dropdown-menu li a:hover {
+	background-color: black;
+	color: #fff
+}
+
+/* .theme .card {
+	background-color: rgb(35, 35, 37);
+} */
+
+.theme .card .body h4 strong {
+	color: white
+}
+
+.theme .card .body h3 strong {
+	color: black
+}
+
+/* 
+.theme .card .body strong,
+.theme .card .body h4 {
+	color: #fff 
+} */
+
+
+.theme .card .body ul li,
+.theme .card .body p {
+	font-size: larger;
+	/* color: #fff */
+}
+
+.theme .authentication .navbar,
+.theme .authentication .page-header {
+	background: black !important
+}
+
+.theme .form-control:focus,
+.theme .form-control:focus+.input-group-addon,
+.theme .form-control:focus~.input-group-addon {
+	border-color: black
+}
+
+.theme.theme-dark .top_navbar {
+	background: black
+}
+
+.theme.theme-dark .input-group-focus .input-group-addon {
+	border-color: rgb(252, 213, 53)
+}
+
+/* .theme .active-bg {
+	background: rgb(24, 26, 32);
+	color: #fff */
+}

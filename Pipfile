@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.1.7"
+django-admin = "==2.0.2"
+flipside = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

@@ -1,0 +1,149 @@
+{% load static %}
+{% load i18n %}
+{% with current_path=request.resolver_match.url_name %}
+<!DOCTYPE html>
+<html class="no-js " lang="LANGUAGE_CODE">
+
+<head>
+
+    {% include "includes/_base-head.html" %}{% block extra_css %}{% endblock extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    {% block extra_styles %}{% endblock %}
+
+</head>
+
+<body class="theme">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="{% static '' %}" width="48"
+                    height="48" alt=""></div>
+            <p>{% trans "Please wait..." %}</p>
+        </div>
+    </div>
+    <div class="overlay"></div>
+
+    <!-- Top Bar -->
+    <nav class="top_navbar" style="background-image: linear-gradient( 
+        53.25turn, #000000, 77%, #000000);">
+        <div class="container">
+
+            <div class="row clearfix">
+                <div class="col-12">
+                    <div class="navbar-logo">
+                        <a href="javascript:void(0);" class="bars"></a>
+                        <a class="navbar-brand" href="">
+                            <!-- <img src="{% static '' %}" width="45" alt=""> -->
+                            <span class="m-l-10" style="color: white; font-weight: bold;">Swap Advisor</span>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown app_menu hidden-sm">
+                            <div class="input-group" style="margin-top: 9px;">
+                                <a href="https://twitter.com/SocioCrypto" target="blank">
+                                    <span
+                                        style="font-size: 10px; font-weight: 500; color: white; margin-top: 6px;">DEVELOPED
+                                        BY </span> <span
+                                        style="font-size: 12px; font-weight: 600; color: white; margin-left: 4px;"><b
+                                            style="font-size: medium;"> S</b>ocio<b
+                                            style="font-size: medium;">C</b>rypto</span>
+                                </a>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% include "includes/_menu.html" %}
+    <section class="content profile_page">
+        <div class="container">
+            <!-- Strart Breadcrumbs Section -->
+
+            <!-- End Breadcrumbs Section -->
+
+            <!-- Start Main Content Section -->
+            <div class="row clearfix"></div>
+            <div class="row">
+                {% block content %} {% endblock %}
+
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12 col-lg-12">
+                    <hr style="height: 3px;
+                    border: none;
+                    background-color: #1a1a1c;">
+                          <div class="row clearfix" style="margin-bottom: -16px;">
+                                
+                            <div class="input-group col-lg-6 col-md-12 col-sm-12 disable-justify-content" style=" justify-content: left; align-items: center;">
+                            <span style="color: white">Data Powered by</span> <img src="{% static 'images/70hkhyjft2.png' %}"  height="70" alt="flipside">
+                            </div>
+                        
+                            <div class="input-group col-lg-6 col-md-12 col-sm-12 disable-justify-content" style=" justify-content: right; align-items: center;">
+                                <a href="https://medium.com/@sociocrypto1" target="blank">
+                                    <img src="{% static 'images/contacts-logo/medium-white.jpg' %}"  height="20" alt="medium" title="medium"
+                                    >
+                                </a>
+                                <img src="{% static 'images/contacts-logo/email-white.png' %}" width="15" height="15" alt="email" title="email"
+                                style="margin-right: 8px; border-radius: 50%;">
+                                <a href="https://gitlab.com/sociocrypto" target="blank">
+                                  <img src="{% static 'images/contacts-logo/github-white.png' %}" width="15" height="15" alt="github" title="github"
+                                  style="margin-right: 8px; border-radius: 50%;">
+                                </a>
+                                <a href="https://twitter.com/SocioCrypto" target="blank">
+                                    <img src="{% static 'images/contacts-logo/twitter-white.png' %}" width="15" height="15" alt="twitter" title="twitter"
+                                    style="margin-right: 8px;">
+                                </a>
+                                <img src="{% static 'images/contacts-logo/discord-white.png' %}" width="18" height="13" alt="discoed" title="discoed">
+                                <a href="https://mirror.xyz/0x021b8D868A589Aad0Dd1297Dce136D31b23BdFE7" target="blank">
+                                    <img src="{% static 'images/contacts-logo/mirror.png' %}" width="35" height="35" alt="mirror" title="mirror"
+                                        style="margin-right: 8px;">
+                                </a>
+                            </div>
+                                        
+                    </div>
+                       
+                </div>
+            </div>
+
+            <!-- End Main Content Section -->
+        </div>
+
+    </section>
+
+    <script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
+    <!-- Lib Scripts Plugin Js ( jquery.v3.2.1, Bootstrap4 js) -->
+    <script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script>
+    <!-- slimscroll, waves Scripts Plugin Js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script>
+
+
+    <!-- // #region chart // -->
+    <style>
+        :root {
+            --r-background-color: 'transparent';
+            --r-text-color: #979797;
+            --r-title-color: #494949;
+            --r-overview-color: #bdbdbd;
+            --r-highlight-color: #ff7900;
+            --r-highlight-text-color: #ffffff;
+        }
+    </style>
+    <!-- <script type="text/javascript" src="{% static 'assets/js/data.js' %}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+    <!-- <script type="module">
+            import { moduleInfo } from "{% static 'assets/js/modules-min.js' %}";
+         </script> -->
+    <!-- // #endregion chart // -->
+
+
+    {% include "includes/_base-scripts.inc" %}
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
+{% endwith %}

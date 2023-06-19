@@ -1,0 +1,212 @@
+{% extends "base-dashboard.html" %}
+{% load i18n %}
+{% block secondary_menu %}
+{% endblock secondary_menu %}
+{% load static %}
+
+{% block title %}
+<!-- {% trans 'Accounts' %} -->
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href=""><i class="icon-home"></i>
+  </a>
+</li>
+<li class="breadcrumb-item active">{% trans 'Dashboard' %}</li>
+{% endblock %}
+
+
+{% block content %}
+
+<section class="container assess-list">
+  <div class="container-fluid project-list">
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card"></div>
+      </div>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card">
+          <div class="body">
+            <h4><strong>Number of Traders</strong></h4>
+            <input type="hidden" id="median" value="{{ median }}">
+
+            <div id='medium_rate_per_platform' style="height: 400px;"></div>
+            <p class="d-flex justify-content-center"
+              style="align-content: center; font-variant-caps: all-petite-caps;">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" type="module" src="{% static 'assets/js/modules-min.js' %}"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+<script>
+  async function bar_chart_api_1( id, decimals) {
+    var medianText = document.getElementById("median").value.replaceAll("'", '"');
+    console.log('medianText',medianText)
+    
+    var medianObject = JSON.parse(medianText);
+
+    var success_list = Object.values(medianObject);
+    var success_labels = Object.keys(medianObject);
+      console.log(success_list)
+    var options = {
+      series: [
+        {
+          // labels:{
+          //   style:{
+          //     color:'white'
+          //   }
+          // },
+
+          data: success_list,
+        },
+      ],
+      chart: {
+        height: 500,
+        type: "bar",
+        toolbar: {
+          show: true,
+          autoSelected: "zoom",
+          tools: {
+            download: true,
+            customIcons: [
+              {
+                icon: '<a href="https://app.flipsidecrypto.com/velocity/queries/" target="blank"><span class="iconify" data-icon="fa:database"></span></a>',
+                index: 5,
+                title: "Query",
+                class: "custom-icon",
+              },
+            ],
+          },
+        },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          dataLabels: {
+            position: "top", // top, center, bottom
+          },
+          distributed: true,
+        },
+      },
+      colors: [
+        '#04e1cb', '#1b96ff', '#ba01ff', '#baec70', '#ff5d2d', '#ac8e68', '#ffe620', '#e3066a', '#04e1cb'
+      ],
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return val;
+        },
+        offsetY: -20,
+        style: {
+          fontSize: "12px",
+          colors: ["#195f90"],
+        },
+      },
+
+      xaxis: {
+        categories: success_labels,
+        position: "bottom",
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels:{
+          style:{
+            colors:'white'
+          }
+        },
+        crosshairs: {
+          fill: {
+            type: "gradient",
+            gradient: {
+              colorFrom: "#D8E3F0",
+              colorTo: "#BED1E6",
+              stops: [0, 1],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            },
+          },
+        },
+
+     
+      },
+      yaxis: {
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+          formatter: function (val) {
+            return val + "%";
+          },
+          style:{
+            colors:['white']
+          }
+        },
+      },
+      legend:{
+        show:false,
+        labels:{
+          
+          colors:'white'
+          
+        }
+      },
+      title: {
+        text: "",
+        floating: true,
+        offsetY: 330,
+        align: "center",
+        style: {
+          color: "white",
+        },
+      },
+      tooltip: {
+            shared: false,
+            theme: false,
+            
+            y: {
+              formatter: function (val) {
+                return (val).toFixed(0)
+              }
+            }
+          }
+      
+    };
+
+    var chart = new ApexCharts(document.querySelector(id), options);
+    chart.render();
+  }
+</script>
+
+<script>
+  // var api = 'https://api.flipsidecrypto.com/api/v2/queries/5a0ec83f-3996-443f-945c-d2638a6a5b07/data/latest';
+  // var api_id = '5a0ec83f-3996-443f-945c-d2638a6a5b07'
+  // var param = 'N_TXNS';
+  var id = '#medium_rate_per_platform'
+  bar_chart_api_1( id, 0)
+</script>
+
+
+{% endblock %}
