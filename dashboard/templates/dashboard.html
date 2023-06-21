@@ -254,6 +254,32 @@
   </div>
 </div>
 
+<div class="row clearfix">
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong>Average Rate per Day Hour and Week Days</strong></h4>
+        <input type="hidden" id="data_time" value="{{ data_time }}">
+        <div id='average_rate_per_day_hour_and_week_days' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong style="font-size: 21px;">Avg. Number of Swaps per Day Hour and Week Days</strong></h4>
+        <div id='avg_number_of_swaps_per_day_hour_and_week_days' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
   </div>
 </section>
@@ -568,5 +594,211 @@
 
 </script>
 
+<script>
+  async function average_rate_api(){
+      var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+      var dataText_x = document.getElementById("data_time").value.replaceAll("'", '"');
+      var dataObject = JSON.parse(dataText_x);
+      for (let index = 0; index < dataObject.length; index++) {
+      const average_rate_element = dataObject[index];
+      average_rate_list[average_rate_element['day']].push(average_rate_element['avg']);  
+      }
 
+      console.log('average_rate_list', average_rate_list);
+      var options = {
+        series: [{
+        name: 'Monday',
+        data: average_rate_list['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_rate_list['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_rate_list['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_rate_list['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_rate_list['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_rate_list['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_rate_list['Sun']
+      }
+      ],
+        chart: {
+        height: 450,
+        type: 'heatmap',
+        // toolbar: {
+        //   show:true,
+        //   autoSelected: 'zoom',
+        //   tools:{
+        //     download: true,
+        //     customIcons: [{
+        //         icon: '<a href="https://app.flipsidecrypto.com/velocity/queries/69012a68-c68b-456b-81ce-d84f01712ff6"><span class="iconify" data-icon="fa:database"></span></a>',
+        //         index: 5,
+        //         title: 'Query',
+        //         class: 'custom-icon'
+        //         }]
+        //   } 
+        // }
+        
+      },
+      yaxis:{
+
+        labels:{
+          style:{
+            colors:['white']
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["#575151"],
+      title: {
+        text: ''
+      },
+      xaxis: {
+        type: 'category',
+        labels:{
+          style:{
+            colors:'white'
+          }
+        },
+        title:{
+            text:''
+        },
+        categories: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00','08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00','16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+      },
+      tooltip: {
+            shared: false,
+            theme: false,
+            
+            y: {
+              formatter: function (val) {
+                return (val).toFixed(4)
+              }
+            }
+          }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#average_rate_per_day_hour_and_week_days"), options);
+      chart.render();
+  }   
+  average_rate_api();
+</script>
+
+<script>
+  async function average_rate_api(){
+      var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+      var dataText_x = document.getElementById("data_time").value.replaceAll("'", '"');
+      var dataObject = JSON.parse(dataText_x);
+      for (let index = 0; index < dataObject.length; index++) {
+      const average_rate_element = dataObject[index];
+      average_rate_list[average_rate_element['day']].push(average_rate_element['n_txn']);  
+      }
+
+      console.log('average_rate_list', average_rate_list);
+      var options = {
+        series: [{
+        name: 'Monday',
+        data: average_rate_list['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_rate_list['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_rate_list['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_rate_list['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_rate_list['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_rate_list['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_rate_list['Sun']
+      }
+      ],
+        chart: {
+        height: 450,
+        type: 'heatmap',
+        // toolbar: {
+        //   show:true,
+        //   autoSelected: 'zoom',
+        //   tools:{
+        //     download: true,
+        //     customIcons: [{
+        //         icon: '<a href="https://app.flipsidecrypto.com/velocity/queries/69012a68-c68b-456b-81ce-d84f01712ff6"><span class="iconify" data-icon="fa:database"></span></a>',
+        //         index: 5,
+        //         title: 'Query',
+        //         class: 'custom-icon'
+        //         }]
+        //   } 
+        // }
+        
+      },
+      yaxis:{
+
+        labels:{
+          style:{
+            colors:['white']
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["#575151"],
+      title: {
+        text: ''
+      },
+      xaxis: {
+        type: 'category',
+        labels:{
+          style:{
+            colors:'white'
+          }
+        },
+        title:{
+            text:''
+        },
+        categories: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00','08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00','16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+      },
+      tooltip: {
+            shared: false,
+            theme: false,
+            
+            y: {
+              formatter: function (val) {
+                return (val).toFixed(4)
+              }
+            }
+          }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#avg_number_of_swaps_per_day_hour_and_week_days"), options);
+      chart.render();
+  }   
+  average_rate_api();
+</script>
 {% endblock %}
