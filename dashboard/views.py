@@ -6,8 +6,12 @@ from .services import median_rate_per_platform
 class DashboardView(View):
 
     def get(self, request):
-        data = median_rate_per_platform()
-        median = {item['platform']: item['number of swappers'] for item in data}
         context = {}
-        context['median'] = median
+        data = median_rate_per_platform()
+        context['data'] = data 
+        context['median'] = {item['platform']: item['median_of_exch_rate'] for item in data}
+        context['average'] = {item['platform']: item['average_of_exch_rate'] for item in data}
+        context['swaps'] = {item['platform']: item['number_of_swaps'] for item in data}
+        context['swappers'] = {item['platform']: item['number_of_swappers'] for item in data}
+   
         return render(request, 'dashboard.html', context=context)

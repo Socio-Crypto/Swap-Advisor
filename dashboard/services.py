@@ -20,10 +20,10 @@ def median_rate_per_platform():
 
     sql_query = f"""
        	SELECT platform,
-        avg(amount_in/amount_out) as "Average of Exch. Rate",
-        median(amount_in/amount_out) as "Median of Exch. Rate",
-        count(DISTINCT tx_hash) as "Number of Swaps",
-        count (DISTINCT sender) as "Number of Swappers"
+        avg(amount_in/amount_out) as "average_of_exch_rate",
+        median(amount_in/amount_out) as "median_of_exch_rate",
+        count(DISTINCT tx_hash) as "number_of_swaps",
+        count (DISTINCT sender) as "number_of_swappers"
         FROM avalanche.core.ez_dex_swaps
         WHERE token_in ilike '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' AND token_out ilike '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
         AND amount_out >0
