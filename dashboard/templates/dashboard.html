@@ -424,7 +424,7 @@
       },
       tooltip: {
             shared: false,
-            theme: false,
+            theme: 'dark',
             
             y: {
               formatter: function (val) {
@@ -564,7 +564,7 @@
       },
       tooltip: {
         shared: false,
-        theme: false,
+        theme: 'dark',
         y: {
           formatter: function (val) {
             return (val).toFixed(2)
@@ -601,13 +601,13 @@
 
 <script>
   async function average_rate_api(){
-      var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+    var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
       var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
       if (average_rate_element['platform'] == 'gmx'){
-        average_rate_list[average_rate_element['day']].push(average_rate_element['avg']);  
+        average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg'];  
       }
       }
 
@@ -671,7 +671,7 @@
       dataLabels: {
         enabled: false
       },
-      colors: ["#575151"],
+      colors: ["#c5095e"],
       title: {
         text: ''
       },
@@ -689,7 +689,7 @@
       },
       tooltip: {
             shared: false,
-            theme: false,
+            theme: 'dark',
             
             y: {
               formatter: function (val) {
@@ -707,13 +707,13 @@
 
 <script>
   async function average_number_api(){
-      var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+    var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
       var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
       if (average_rate_element['platform'] == 'gmx'){
-        average_rate_list[average_rate_element['day']].push(average_rate_element['n_txn']);  
+        average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['n_txn'];  
       }
       }
 
@@ -777,7 +777,7 @@
       dataLabels: {
         enabled: false
       },
-      colors: ["#575151"],
+      colors: ["#c5095e"],
       title: {
         text: ''
       },
@@ -795,7 +795,7 @@
       },
       tooltip: {
             shared: false,
-            theme: false,
+            theme: 'dark',
             
             y: {
               formatter: function (val) {
@@ -817,17 +817,17 @@
     var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
     var dataObject = JSON.parse(dataText_x);
 
-    var average_rate = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
-    var average_no_swaps = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+    var average_rate = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
+    var average_no_swaps = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
 
     for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
       if (average_rate_element['platform'] == dex){
-        average_rate[average_rate_element['day']].push(average_rate_element['n_txn']);  
-        average_no_swaps[average_rate_element['day']].push(average_rate_element['avg']);  
+        average_rate[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg'];  
+        average_no_swaps[average_rate_element['day']][average_rate_element['day']] = average_rate_element['n_txn'];  
       }
     } 
-    haet_1 = [{
+    heat_1 = [{
         name: 'Monday',
         data: average_rate['Mon']
       },
@@ -856,7 +856,7 @@
         data: average_rate['Sun']
       }
       ]
-    haet_2 = [{
+    heat_2 = [{
         name: 'Monday',
         data: average_no_swaps['Mon']
       },
@@ -885,7 +885,7 @@
         data: average_no_swaps['Sun']
       }
       ]
-    ApexCharts.exec('heat1', 'updateSeries', haet_1, true);
+    ApexCharts.exec('heat1', 'updateSeries', heat_1, true);
     ApexCharts.exec('heat2', 'updateSeries', heat_2, true);
 
   }

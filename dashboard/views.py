@@ -18,6 +18,7 @@ class DashboardView(View):
 
         context['heat_map_data'] = results['data_per_time']
         context['platforms'] = list({item['platform'] for item in context['heat_map_data']})
+        context['platforms'].remove('gmx')
         # {unique(item['platform']) for item in context['data_time']}
 
         return render(request, 'dashboard.html', context=context)
