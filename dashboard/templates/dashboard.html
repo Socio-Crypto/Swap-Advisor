@@ -824,7 +824,7 @@
       const average_rate_element = dataObject[index];
       if (average_rate_element['platform'] == dex){
         average_rate[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg'];  
-        average_no_swaps[average_rate_element['day']][average_rate_element['day']] = average_rate_element['n_txn'];  
+        average_no_swaps[average_rate_element['day']][average_rate_element['time']] = average_rate_element['n_txn'];  
       }
     } 
     heat_1 = [{
