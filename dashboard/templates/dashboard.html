@@ -231,6 +231,13 @@
       <div class="card">
           <div class="body">
             <h4><strong>What is the optimal hour and day for the swap?</strong></h4>
+            <select class="ice-cream" name="dex" , id="dex" style="height:60px ;margin-left: 100px;">
+               <option value="gmx"> gmx </option>
+               {% for platform in platforms %}
+               <option value="{{ platform }}"> {{ platform }} </option>
+             {% endfor %}
+    
+            </select>
           </div>
       </div>
   </div>
@@ -259,7 +266,7 @@
     <div class="card">
       <div class="body">
         <h4><strong>Average Rate per Day Hour and Week Days</strong></h4>
-        <input type="hidden" id="data_time" value="{{ data_time }}">
+        <input type="hidden" id="heat_map_data" value="{{ heat_map_data }}">
         <div id='average_rate_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -290,7 +297,7 @@
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<!-- 
+
 <script>
   async function bar_chart_api_1(dataText, id, decimals) {
     
@@ -466,8 +473,6 @@
   async function base_scatter_plot(dataText_x, dataText_y, decimals, html_id) {
 
 
-    console.log('dataText', dataText_x)
-    console.log('dataText', dataText_y)
     var dataObject_x = JSON.parse(dataText_x);
     var dataObject_y = JSON.parse(dataText_y);
 
@@ -597,14 +602,15 @@
 <script>
   async function average_rate_api(){
       var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
-      var dataText_x = document.getElementById("data_time").value.replaceAll("'", '"');
+      var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
-      average_rate_list[average_rate_element['day']].push(average_rate_element['avg']);  
+      if (average_rate_element['platform'] == 'gmx'){
+        average_rate_list[average_rate_element['day']].push(average_rate_element['avg']);  
+      }
       }
 
-      console.log('average_rate_list', average_rate_list);
       var options = {
         series: [{
         name: 'Monday',
@@ -637,6 +643,7 @@
       ],
         chart: {
         height: 450,
+        id:'heat1',
         type: 'heatmap',
         // toolbar: {
         //   show:true,
@@ -699,16 +706,17 @@
 </script>
 
 <script>
-  async function average_rate_api(){
+  async function average_number_api(){
       var average_rate_list = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
-      var dataText_x = document.getElementById("data_time").value.replaceAll("'", '"');
+      var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
-      average_rate_list[average_rate_element['day']].push(average_rate_element['n_txn']);  
+      if (average_rate_element['platform'] == 'gmx'){
+        average_rate_list[average_rate_element['day']].push(average_rate_element['n_txn']);  
+      }
       }
 
-      console.log('average_rate_list', average_rate_list);
       var options = {
         series: [{
         name: 'Monday',
@@ -741,6 +749,7 @@
       ],
         chart: {
         height: 450,
+        id:'heat2',
         type: 'heatmap',
         // toolbar: {
         //   show:true,
@@ -799,6 +808,99 @@
       var chart = new ApexCharts(document.querySelector("#avg_number_of_swaps_per_day_hour_and_week_days"), options);
       chart.render();
   }   
-  average_rate_api();
-</script> -->
+  average_number_api();
+</script>
+
+
+<Script>
+  async function update_heatmap(dex){
+    var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
+    var dataObject = JSON.parse(dataText_x);
+
+    var average_rate = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+    var average_no_swaps = {'Mon':[],'Tue':[],'Wed':[],'Thu':[],'Fri':[],'Sat':[],'Sun':[]};
+
+    for (let index = 0; index < dataObject.length; index++) {
+      const average_rate_element = dataObject[index];
+      if (average_rate_element['platform'] == dex){
+        average_rate[average_rate_element['day']].push(average_rate_element['n_txn']);  
+        average_no_swaps[average_rate_element['day']].push(average_rate_element['avg']);  
+      }
+    } 
+    haet_1 = [{
+        name: 'Monday',
+        data: average_rate['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_rate['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_rate['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_rate['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_rate['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_rate['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_rate['Sun']
+      }
+      ]
+    haet_2 = [{
+        name: 'Monday',
+        data: average_no_swaps['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_no_swaps['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_no_swaps['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_no_swaps['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_no_swaps['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_no_swaps['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_no_swaps['Sun']
+      }
+      ]
+    ApexCharts.exec('heat1', 'updateSeries', haet_1, true);
+    ApexCharts.exec('heat2', 'updateSeries', heat_2, true);
+
+  }
+</Script>
+<script>
+  var sel = document.getElementById("dex");
+  var text = sel.options[sel.selectedIndex].value;
+  sel.addEventListener('change', (event) => {
+    var dex = event.target.value;
+    update_heatmap(dex)
+    // update_bar_chart_with_data_frame('https://node-api.flipsidecrypto.com/api/v2/queries/5f6c9026-4cf5-4ff5-ba79-3b118ae23bc6/data/latest', time_frame, 'SUCCESS_RATE', 'bar1', 0)
+    // update_bar_chart_with_data_frame('https://node-api.flipsidecrypto.com/api/v2/queries/5f6c9026-4cf5-4ff5-ba79-3b118ae23bc6/data/latest', time_frame, 'TPS', 'bar2', 0)
+    // update_bar_chart_with_data_frame('https://node-api.flipsidecrypto.com/api/v2/queries/f2b4d7a4-73a6-487a-b2b9-364002423aa6/data/latest', time_frame, 'AVG_TIME_DIFF', 'bar3', 0)
+   });
+</script>
+
+
 {% endblock %}
