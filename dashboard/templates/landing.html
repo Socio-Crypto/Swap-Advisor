@@ -1,0 +1,202 @@
+{% extends "base-dashboard.html" %}
+{% load i18n %}
+{% block secondary_menu %}
+{% endblock secondary_menu %}
+{% load static %}
+
+{% block title %}
+<!-- {% trans 'Accounts' %} -->
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">
+  <a href=""><i class="icon-home"></i>
+  </a>
+</li>
+<li class="breadcrumb-item active">{% trans '' %}</li>
+{% endblock %}
+
+{% block content %}
+
+<section class="container assess-list">
+  <div class="container-fluid project-list">
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="card"></div>
+      </div>
+    </div>
+    <div class="center-div">
+      <div class="row clearfix" style="width: 40%;" id="show_dex_card">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+          <div class="card">
+            <div class="body">
+              
+                <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
+                  <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
+                    Network :
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8">
+                    <select class="ice-cream" name="network" , id="network" style="height:40px ;margin-left: 100px;">
+                      <option value="avalanche" selected> Avalanche </option>
+                      <option value="polygon"> Polygon </option>
+                      <option value="ethereum"> Ethereum </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
+                  <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
+                    Duration :
+                  </div>
+                  <div class="col-xl-8 col-lg-8 col-md-8">
+                    <select class="ice-cream" name="time" , id="time" style="height:60px ;margin-left: 100px; width: %;">
+                      <option value="1" selected> 1 month </option>
+                      <option value="3"> 3 month </option>
+                      <option value="6"> 6 month </option>
+                    </select>
+                  </div>
+                </div>
+
+              <div class="row clearfix">
+                
+                <div class="col-xl-6 col-lg-6 col-md-12">
+                  <input type="text" class="form-control" id="token_in" placeholder="Token in" style="color: white; height: 37px;"/>                                   
+                 
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-12">
+                  <input type="text" class="form-control" id="token_out" placeholder="Token out" style="color: white; height: 37px;"/>                                   
+                  
+                </div>
+    
+              </div>
+
+              <div class="row clearfix spin_div" id="spin_div" >
+                <span class="loader" id="loadingSpinner"></span>
+              </div>
+
+              <div class="diagram" id="diagram">
+                <div class="token-in">
+                  <div class="token">Token In</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="dex">
+                  <div class="dex" id="dexValue" style="font-size: 28px;">dex</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="token-out">
+                  <div class="token">Token Out</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+<script>
+
+$(document).ready(function() {
+
+  function showLoadingSpinner() {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.style.display = 'block';
+    
+    const spinner_div = document.getElementById('spin_div');
+    spinner_div.style.display = 'flex';
+  }
+
+  function hideLoadingSpinner() {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.style.display = 'none';
+    const spinner_div = document.getElementById('spin_div');
+    spinner_div.style.display = 'none';
+  }
+
+  function sendAjaxRequest() {
+    // Get the values from the input fields
+    var network = document.getElementById('network').value;
+    var time = document.getElementById('time').value;
+    var tokenInValue = document.getElementById('token_in').value;
+    var tokenOutValue = document.getElementById('token_out').value;
+
+    // Check if both fields are filled
+    if (tokenInValue && tokenOutValue) {
+      diagram.style.display = 'none';
+
+      showLoadingSpinner()
+     var data = {
+        'network': network,
+        'time': time,
+        'token_in': tokenInValue,
+        'token_out': tokenOutValue,
+      };
+
+      $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+          }
+        });
+
+      $.ajax({
+        url: '/find_dex/',
+        type: 'POST',
+       
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: function(response) {
+          hideLoadingSpinner()
+          const diagram = document.getElementById('diagram');
+          // const tokenInSymbol = document.getElementById('tokenIn');
+          // const tokenOutSymbol = document.getElementById('tokenOut');
+          const dexValue = document.getElementById('dexValue');
+
+          // tokenInSymbol.textContent = tokenInValue;
+          // tokenOutSymbol.textContent = tokenOutValue;
+          dexValue.textContent = response;
+
+          // Show the diagram
+          diagram.style.display = 'flex';
+        },
+        error: function(xhr, status, error) {
+          // Handle any errors that occur during the AJAX request
+          console.error('Error:', error);
+        }
+      });
+    }
+
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  }
+
+  // Add event listeners to the input fields
+  document.getElementById('token_in').addEventListener('input', sendAjaxRequest);
+  document.getElementById('token_out').addEventListener('input', sendAjaxRequest);
+
+})
+</script>
+
+
+{% endblock %}

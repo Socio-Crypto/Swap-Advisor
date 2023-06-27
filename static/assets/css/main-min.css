@@ -7,6 +7,75 @@
 	src: local("Material Icons"), local("MaterialIcons-Regular"), url(https://fonts.gstatic.com/s/materialicons/v19/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format("woff2")
 }
 
+.spin_div {
+	height: 66px;
+	justify-content: center;
+}
+
+.loader, .loader:before, .loader:after {
+	border-radius: 50%;
+	width: 1em;
+	height: 1em;
+	animation-fill-mode: both;
+	animation: bblFadInOut 1.8s infinite ease-in-out;
+  }
+  .loader {
+	color: #FFF;
+	font-size: 7px;
+	position: relative;
+	text-indent: -9999em;
+	transform: translateZ(0);
+	animation-delay: -0.16s;
+	display: none;
+
+  }
+  .loader:before,
+  .loader:after {
+	content: '';
+	position: absolute;
+	top: 0;
+  }
+  .loader:before {
+	left: -3.5em;
+	animation-delay: -0.32s;
+  }
+  .loader:after {
+	left: 3.5em;
+  }
+  
+  @keyframes bblFadInOut {
+	0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
+	40% { box-shadow: 0 2.5em 0 0 }
+  }
+	  
+.diagram {
+	display: none;
+	/* display: flex; */
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+  }
+  
+  .token-in,
+  .token-out,
+  .dex {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10px;
+  }
+  
+  .symbol {
+	font-weight: bold;
+  }
+  
+  .arrow {
+	border-top: 2px solid black;
+	width: 100px;
+  }
+  
+
+  
 .material-icons {
 	font-family: 'Material Icons';
 	font-weight: normal;
@@ -22,6 +91,12 @@
 	-webkit-font-feature-settings: 'liga';
 	-webkit-font-smoothing: antialiased
 }
+
+.center-div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
 
 @font-face {
 	font-family: 'simple-Line-Icons';
