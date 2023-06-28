@@ -45,12 +45,11 @@ class LandingView(View):
 
 def find_dex(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
 
-        network = data['network']
-        token_in = data['token_in']
-        token_out = data['token_out']
-        time = data['time']
+        network = request.POST.get('network')
+        token_in = request.POST.get('token_in')
+        token_out = request.POST.get('token_out')
+        time = request.POST.get('time')
 
         symbols = median_rate_per_platform(network, token_in, token_out, time)
         data = symbols[0]['platform']

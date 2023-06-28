@@ -136,25 +136,30 @@ $(document).ready(function() {
 
       showLoadingSpinner()
      var data = {
-        'network': network,
-        'time': time,
-        'token_in': tokenInValue,
-        'token_out': tokenOutValue,
-
+        network: network,
+        time: time,
+        token_in: tokenInValue,
+        token_out: tokenOutValue,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
       };
 
-      $.ajaxSetup({
-          headers: {
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          }
-        });
+      // $.ajaxSetup({
+      //     headers: {
+      //       csrfmiddlewaretoken: '{{ csrf_token }}'
+      //     }
+      //   });
 
       $.ajax({
-        url: '/find_dex/',
-        type: 'POST',
+        method: 'POST',
+        url: "{% url 'find_dex' %}",
        
-        data: JSON.stringify(data),
-        contentType: 'application/json',
+        data: {
+          network: network,
+          time: time,
+          token_in: tokenInValue,
+          token_out: tokenOutValue,
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
         success: function(response) {
           hideLoadingSpinner()
           const diagram = document.getElementById('diagram');
