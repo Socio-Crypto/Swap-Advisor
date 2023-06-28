@@ -140,11 +140,12 @@ $(document).ready(function() {
         'time': time,
         'token_in': tokenInValue,
         'token_out': tokenOutValue,
+
       };
 
       $.ajaxSetup({
           headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            csrfmiddlewaretoken: '{{ csrf_token }}'
           }
         });
 
