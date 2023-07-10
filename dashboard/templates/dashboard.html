@@ -232,7 +232,7 @@
           <div class="body">
             <h4><strong>What is the optimal hour and day for the swap?</strong></h4>
             <select class="ice-cream" name="dex" , id="dex" style="height:60px ;margin-left: 100px;">
-               <option value="gmx"> gmx </option>
+               <option value="{{ platform }}"> {{ platform }} </option>
                {% for platform in platforms %}
                <option value="{{ platform }}"> {{ platform }} </option>
              {% endfor %}
@@ -267,6 +267,7 @@
       <div class="body">
         <h4><strong>Average Rate per Day Hour and Week Days</strong></h4>
         <input type="hidden" id="heat_map_data" value="{{ heat_map_data }}">
+        <input type="hidden" id="platform" value="{{ platform }}">
         <div id='average_rate_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -603,10 +604,11 @@
   async function average_rate_api(){
     var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
       var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
+      var platform = document.getElementById("platform").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
-      if (average_rate_element['platform'] == 'gmx'){
+      if (average_rate_element['platform'] == platform){
         average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg'];  
       }
       }
@@ -709,10 +711,11 @@
   async function average_number_api(){
     var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
       var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
+      var platform = document.getElementById("platform").value.replaceAll("'", '"');
       var dataObject = JSON.parse(dataText_x);
       for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
-      if (average_rate_element['platform'] == 'gmx'){
+      if (average_rate_element['platform'] == platform){
         average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['n_txn'];  
       }
       }

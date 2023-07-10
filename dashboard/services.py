@@ -32,10 +32,11 @@ def median_rate_per_platform(network, token_in, token_out, time):
         GROUP BY 1
         ORDER BY 3 DESC
     """
+   
     return get_result_from_query(sql_query)
 
 
-def data_per_time():
+def data_per_time(network, token_in, token_out, time):
 
     "Flipside: https://flipsidecrypto.xyz/SocioCrypto/q/C3OmwFf0Pglv/stats"
 
@@ -46,54 +47,146 @@ def data_per_time():
         hour(block_timestamp) as time,
         avg(amount_in/amount_out) as avg,
         count(DISTINCT tx_hash) as n_txn
-        FROM avalanche.core.ez_dex_swaps
-        WHERE token_in ilike '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'
-        AND token_out ilike '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'
+        FROM {network}.core.ez_dex_swaps
+        WHERE token_in ilike '{token_in}'
+        AND token_out ilike '{token_out}'
         AND amount_out >0
-        AND block_timestamp >= current_date-7
+        AND block_timestamp  > dateadd('month', -{time}, current_date)
         GROUP BY 1,2,3
         ORDER BY 1,2,3
     """
     return get_result_from_query(sql_query)
 
 
-def get_token_in():
+def get_stats_table(network, token_in, token_out, time):
 
-    sql_query = """ 
-        SELECT 
-        DISTINCT symbol_in
-        FROM avalanche.core.ez_dex_swaps
-        WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
-    """
-
-    return get_result_from_query(sql_query)
-
-
-def get_token_out():
-
-    sql_query = """ 
-        SELECT 
-        DISTINCT symbol_out
-        FROM avalanche.core.ez_dex_swaps
-        WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
-    """
-
-    return get_result_from_query(sql_query)
-
-
-def get_top_10_tokens():
-
-    sql_query = """
-        SELECT symbols
-        FROM(
-        SELECT 
-        coalesce(symbol_in,symbol_out) as symbols,
-        count(1)
-        FROM avalanche.core.ez_dex_swaps
-        WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
+    sql_query = f"""
+        WITH first_query AS (
+        SELECT platform,
+            avg(amount_in/amount_out) as "Average of Exch. Rate",
+            median(amount_in/amount_out) as "Median of Exch. Rate",
+            count(DISTINCT tx_hash) as "Number of Swaps",
+            count(DISTINCT sender) as "Number of Swappers"
+        FROM {network}.core.ez_dex_swaps
+        WHERE token_in ilike '{token_in}' AND token_out ilike '{token_out}'
+            AND amount_out > 0
+            AND block_timestamp  > dateadd('month', -{time}, current_date)
         GROUP BY 1
-        ORDER BY 2 DESC 
-        LIMIT 10 
+        ORDER BY 3 DESC
+        ),
+        second_query AS (
+        WITH tb0 AS (
+            SELECT date_trunc('day', block_timestamp) as date,
+            platform,
+            zeroifnull (count(DISTINCT tx_hash)) as n_swaps,
+            count(DISTINCT sender) as n_swappers
+            FROM {network}.core.ez_dex_swaps
+        WHERE token_in ilike '{token_in}' AND token_out ilike '{token_out}'
+            AND amount_out > 0 
+            AND block_timestamp  > dateadd('month', -{time}, current_date)
+            GROUP BY 1, 2
         )
+        SELECT platform,
+            ARRAY_AGG(coalesce(n_swaps, 0)) as swaps,
+            ARRAY_AGG(coalesce(n_swappers, 0)) as swappers
+        FROM tb0
+        GROUP BY 1
+        
+        )
+        SELECT first_query.platform,
+        first_query."Average of Exch. Rate",
+        first_query."Median of Exch. Rate",
+        second_query.swaps,
+        second_query.swappers
+        FROM first_query
+        JOIN second_query ON first_query.platform = second_query.platform;
     """
+    
     return get_result_from_query(sql_query)
+ 
+
+
+def get_initial_stats_table(network, token_in, token_out, time):
+
+    sql_query = f"""
+        WITH first_query AS (
+        SELECT platform,
+            avg(amount_in/amount_out) as "Average of Exch. Rate",
+            median(amount_in/amount_out) as "Median of Exch. Rate",
+            count(DISTINCT tx_hash) as "Number of Swaps",
+            count(DISTINCT sender) as "Number of Swappers"
+        FROM {network}.core.ez_dex_swaps
+        WHERE amount_out > 0
+            AND block_timestamp  > dateadd('month', -{time}, current_date)
+        GROUP BY 1
+        ORDER BY 3 DESC
+        ),
+        second_query AS (
+        WITH tb0 AS (
+            SELECT date_trunc('day', block_timestamp) as date,
+            platform,
+            zeroifnull (count(DISTINCT tx_hash)) as n_swaps,
+            count(DISTINCT sender) as n_swappers
+            FROM {network}.core.ez_dex_swaps
+        WHERE amount_out > 0 
+            AND block_timestamp  > dateadd('month', -{time}, current_date)
+            GROUP BY 1, 2
+        )
+        SELECT platform,
+            ARRAY_AGG(coalesce(n_swaps, 0)) as swaps,
+            ARRAY_AGG(coalesce(n_swappers, 0)) as swappers
+        FROM tb0
+        GROUP BY 1
+        
+        )
+        SELECT first_query.platform,
+        first_query."Average of Exch. Rate",
+        first_query."Median of Exch. Rate",
+        second_query.swaps,
+        second_query.swappers
+        FROM first_query
+        JOIN second_query ON first_query.platform = second_query.platform;
+    """
+    
+    return get_result_from_query(sql_query)
+ 
+# def get_token_in():
+
+#     sql_query = """ 
+#         SELECT 
+#         DISTINCT symbol_in
+#         FROM avalanche.core.ez_dex_swaps
+#         WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
+#     """
+
+#     return get_result_from_query(sql_query)
+
+
+# def get_token_out():
+
+#     sql_query = """ 
+#         SELECT 
+#         DISTINCT symbol_out
+#         FROM avalanche.core.ez_dex_swaps
+#         WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
+#     """
+
+#     return get_result_from_query(sql_query)
+
+
+# def get_top_10_tokens():
+
+#     sql_query = """
+#         SELECT symbols
+#         FROM(
+#         SELECT 
+#         coalesce(symbol_in,symbol_out) as symbols,
+#         count(1)
+#         FROM avalanche.core.ez_dex_swaps
+#         WHERE BLOCK_TIMESTAMP > dateadd('month', -1, current_date)
+#         GROUP BY 1
+#         ORDER BY 2 DESC 
+#         LIMIT 10 
+#         )
+#     """
+#     return get_result_from_query(sql_query)

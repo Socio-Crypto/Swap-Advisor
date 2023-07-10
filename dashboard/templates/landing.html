@@ -76,6 +76,7 @@
               </div>
 
               <div class="diagram" id="diagram">
+
                 <div class="token-in">
                   <div class="token">Token In</div>
                 </div>
@@ -87,12 +88,42 @@
                 <div class="token-out">
                   <div class="token">Token Out</div>
                 </div>
+
+                
+              </div>
+              <div id="more_details" style="text-align-last: center; display: none">
+                <button class="btn btn-primary btn-round" style="background: black;" onclick="redirectToURL()">More Details</button>
               </div>
               
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+
+            <div class="body">
+                <div class="table-responsive" style="height: 431px;">
+                    <table class="table table-striped" id="ListTable">
+                        <thead>
+                            <tr>
+                                <th style="color:white">Platform</th>
+                                <th style="color:white">Average of Exch. Rate</th>
+                                <th style="color:white">Median of Exch. Rate</th>
+                                <th style="color:white">Number of Swaps</th>
+                                <th style="color:white">Number of Swappers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -114,6 +145,7 @@ $(document).ready(function() {
     
     const spinner_div = document.getElementById('spin_div');
     spinner_div.style.display = 'flex';
+    
   }
 
   function hideLoadingSpinner() {
@@ -121,6 +153,13 @@ $(document).ready(function() {
     spinner.style.display = 'none';
     const spinner_div = document.getElementById('spin_div');
     spinner_div.style.display = 'none';
+  }
+
+  function clearTable() {
+    let table = document.getElementById("ListTable");
+    while (table.firstChild) {
+      table.removeChild(table.firstChild);
+    }
   }
 
   function sendAjaxRequest() {
@@ -133,8 +172,12 @@ $(document).ready(function() {
     // Check if both fields are filled
     if (tokenInValue && tokenOutValue) {
       diagram.style.display = 'none';
+      const button_div = document.getElementById('more_details');
+      button_div.style.display = 'none';
 
-      showLoadingSpinner()
+    showLoadingSpinner()
+    clearTable();
+
      var data = {
         network: network,
         time: time,
@@ -142,12 +185,6 @@ $(document).ready(function() {
         token_out: tokenOutValue,
         csrfmiddlewaretoken: '{{ csrf_token }}'
       };
-
-      // $.ajaxSetup({
-      //     headers: {
-      //       csrfmiddlewaretoken: '{{ csrf_token }}'
-      //     }
-      //   });
 
       $.ajax({
         method: 'POST',
@@ -169,10 +206,19 @@ $(document).ready(function() {
 
           // tokenInSymbol.textContent = tokenInValue;
           // tokenOutSymbol.textContent = tokenOutValue;
-          dexValue.textContent = response;
-
+          console.log('response',response)
+          dexValue.textContent = response['platform'];
+          async function fetchDataAndCallTable() {
+            // var dataObject = JSON.parse();
+            var isActive = true
+            table_1(response['stat'], isActive);
+          }
+          fetchDataAndCallTable()
           // Show the diagram
           diagram.style.display = 'flex';
+          
+          const button_div = document.getElementById('more_details');
+          button_div.style.display = 'block';
         },
         error: function(xhr, status, error) {
           // Handle any errors that occur during the AJAX request
@@ -181,28 +227,171 @@ $(document).ready(function() {
       });
     }
 
-    function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
-          }
-        }
-      }
-      return cookieValue;
-    }
   }
 
   // Add event listeners to the input fields
   document.getElementById('token_in').addEventListener('input', sendAjaxRequest);
   document.getElementById('token_out').addEventListener('input', sendAjaxRequest);
+  document.getElementById('network').addEventListener('change', sendAjaxRequest);
+  document.getElementById('time').addEventListener('change', sendAjaxRequest);
 
 })
-</script>
 
+function redirectToURL() {
+  // Redirect to the Django project URL
+  var network = document.getElementById('network').value;
+  var time = document.getElementById('time').value;
+  var tokenInValue = document.getElementById('token_in').value;
+  var tokenOutValue = document.getElementById('token_out').value;
+  var dexValue = document.getElementById('dexValue').innerHTML;
+
+  var url = '/dashboard/' + network + '/' + tokenInValue + '/' + tokenOutValue + '/' + time + '/' + dexValue;
+
+  window.location.href = url
+}
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#network').select2();
+  });
+</script>
+<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-sparkline.min.js"></script>
+<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-data-adapter.min.js"></script>
+ 
+
+  <script>
+    function addRow_1(a1, a2, a3, a4, a5) {
+      // Get the table body element in which you want to add row
+      let table = document.getElementById("ListTable");
+      // Create row element
+      let row = document.createElement("tr")
+
+      // Create cells
+      let c1 = document.createElement("td")
+      let c2 = document.createElement("td")
+      let c3 = document.createElement("td")
+      let c4 = document.createElement("td")
+      let c5 = document.createElement("td")
+
+
+      c1.style.color = "white";
+      c2.style.color = "white";
+      c3.style.color = "white";
+      c4.style.color = "white";
+      // c5.style.color = "white";
+
+      // Insert data to cells
+      c1.innerText = a1
+      c2.innerText = a2
+      c3.innerText = a3
+      // c4.innerText = a4
+      // c5.innerText = a5
+   
+
+
+      // Append cells to row
+      row.appendChild(c1);
+      row.appendChild(c2);
+      row.appendChild(c3);
+      row.appendChild(c4);
+      row.appendChild(c5);
+     
+// Create the sparkline chart
+
+       
+      // Append row to table body
+      table.appendChild(row)
+      $(c5).sparkline(a5, {
+        type: 'line',
+        width: '100',
+        height: '20',
+        lineColor: 'white',
+        fillColor: 'transparent',
+        spotColor: 'red',
+        minSpotColor: 'red',
+        maxSpotColor: 'red',
+        highlightSpotColor: 'red',
+        highlightLineColor: 'red'
+      });
+      
+      table.appendChild(row)
+      $(c4).sparkline(a4, {
+        type: 'line',
+        width: '100',
+        height: '20',
+        lineColor: 'white',
+        fillColor: 'transparent',
+        spotColor: 'red',
+        minSpotColor: 'red',
+        maxSpotColor: 'red',
+        highlightSpotColor: 'red',
+        highlightLineColor: 'red'
+      });
+      
+    }
+  </script>
+
+<script type="text/javascript">
+
+  async function table_1(tx_datas, header){
+    console.log('tx_datas', tx_datas)
+    if (header) {
+      console.log('header')
+      let table = document.getElementById("ListTable");
+      let row = document.createElement("tr")
+
+      // Create cells
+      let c1 = document.createElement("th")
+      let c2 = document.createElement("th")
+      let c3 = document.createElement("th")
+      let c4 = document.createElement("th")
+      let c5 = document.createElement("th")
+
+
+      c1.style.color = "white";
+      c2.style.color = "white";
+      c3.style.color = "white";
+      c4.style.color = "white";
+      c5.style.color = "white";
+
+      // Insert data to cells
+      c1.innerText = "Platform"
+      c2.innerText = "Average of Exch. Rate"
+      c3.innerText = "Median of Exch. Rate"
+      c4.innerText = "Number of Swaps"
+      c5.innerText = "Number of Swappers"
+      
+      // Append cells to row
+      row.appendChild(c1);
+      row.appendChild(c2);
+      row.appendChild(c3);
+      row.appendChild(c4);
+      row.appendChild(c5);
+
+      table.appendChild(row)
+
+    }
+
+    for (let index = 0; index < tx_datas.length; index++) {
+      const element = tx_datas[index];
+      console.log('element', element)
+
+      addRow_1(element['platform'],
+        element['average of exch. rate'],
+        element['median of exch. rate'],
+        element['swaps'],
+        element['swappers'],)
+        
+    }
+  }
+  async function fetchDataAndCallTable() {
+    const tx_data = await fetch('https://api.flipsidecrypto.com/api/v2/queries/c0aaf15d-58ee-4e29-807f-1dce14e8980a/data/latest');
+    var tx_datas = await tx_data.json();
+    table_1(tx_datas, false)
+  }
+  fetchDataAndCallTable()
+</script>
 
 {% endblock %}
