@@ -150,6 +150,7 @@ def get_initial_stats_table(network, token_in, token_out, time):
     
     return get_result_from_query(sql_query)
  
+ 
 # def get_token_in():
 
 #     sql_query = """ 
