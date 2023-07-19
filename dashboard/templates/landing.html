@@ -204,12 +204,12 @@ $(document).ready(function() {
           console.log('response',response)
           dexValue.textContent = response['platform'];
           routeValue.textContent = response['median'].toFixed(5);
-          async function fetchDataAndCallTable() {
+          async function fetchDataAndCallTable_1() {
             // var dataObject = JSON.parse();
             var isActive = true
             table_1(response['stat'], isActive);
           }
-          fetchDataAndCallTable()
+          fetchDataAndCallTable_1()
           // Show the diagram
           diagram.style.display = 'flex';
           
