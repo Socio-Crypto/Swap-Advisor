@@ -79,6 +79,33 @@
         </div>
       </div>
     </div>
+    <div class="row clearfix">
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="body">
+            <h4><strong>Average Gas Used</strong></h4>
+            <input type="hidden" id="gas_used" value="{{ gas_used }}">
+            <div id='average_gas_used' style="height: 400px;"></div>
+            <p class="d-flex justify-content-center"
+              style="align-content: center; font-variant-caps: all-petite-caps;">
+            </p>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="card">
+          <div class="body">
+            <h4><strong>Average tx_fee</strong></h4>
+            <input type="hidden" id="tx_fee" value="{{ tx_fee }}">
+            <div id='average_tx_fee' style="height: 400px;"></div>
+            <p class="d-flex justify-content-center"
+              style="align-content: center; font-variant-caps: all-petite-caps;">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="row clearfix">
       <div class="col-md-12 col-lg-12 col-xl-12">
@@ -91,6 +118,8 @@
                   <th scope="col">PLATFORM</th>
                   <th scope="col">Average of Exch. Rate</th>
                   <th scope="col">Median of Exch. Rate</th>
+                  <th scope="col">Average gas used</th>
+                  <th scope="col">Average tx_fee</th>
                   <th scope="col">Number of Swaps</th>
                   <th scope="col">Number of Swappers</th>
                 </tr>
@@ -101,6 +130,8 @@
                   <td>{{ item.platform }}</td>
                   <td>{{ item.average_of_exch_rate|floatformat:7 }}</td>
                   <td>{{ item.median_of_exch_rate|floatformat:7 }}</td>
+                  <td>{{ item.avg_gas_used|floatformat:1 }}</td>
+                  <td>{{ item.avg_tx_fee|floatformat:7 }}</td>
                   <td>{{ item.number_of_swaps|floatformat:0 }}</td>
                   <td>{{ item.number_of_swappers|floatformat:0 }}</td>
                 </tr>
@@ -227,6 +258,33 @@
 
 
 <div class="row clearfix">
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong>Average Gas Used and Number of Traders</strong></h4>
+        <div id='average_gas_used_and_number_of_traders' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong>Average Tx.Fee and Number of Traders</strong></h4>
+        <div id='average_tx_fee_and_number_of_traders' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row clearfix">
   <div class="col-xl-12 col-lg-12 col-md-12">
       <div class="card">
           <div class="body">
@@ -281,6 +339,31 @@
       <div class="body">
         <h4><strong style="font-size: 21px;">Avg. Number of Swaps per Day Hour and Week Days</strong></h4>
         <div id='avg_number_of_swaps_per_day_hour_and_week_days' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row clearfix">
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong>Average Gas Used per Day Hour and Week Days</strong></h4>
+        <div id='average_gas_used_per_day_hour_and_week_days' style="height: 300px;"></div>
+        <p class="d-flex justify-content-center"
+          style="align-content: center; font-variant-caps: all-petite-caps;">
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-lg-6 col-md-12">
+    <div class="card">
+      <div class="body">
+        <h4><strong style="font-size: 21px;">Average Tx. Fee per Day Hour and Week Days</strong></h4>
+        <div id='average_tx_fee_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
         </p>
@@ -450,6 +533,14 @@
   var id = '#average_of_exchange_rate'
   bar_chart_api_1(dataText, id, 10)
  
+  var dataText = document.getElementById("gas_used").value.replaceAll("'", '"');
+  var id = '#average_gas_used'
+  bar_chart_api_1(dataText, id, 1)
+ 
+  var dataText = document.getElementById("tx_fee").value.replaceAll("'", '"');
+  var id = '#average_tx_fee'
+  bar_chart_api_1(dataText, id, 10)
+ 
  
   var dataText = document.getElementById("swappers").value.replaceAll("'", '"');
   var id = '#number_of_traders_per_platform'
@@ -527,7 +618,7 @@
           },
           show: true,
           formatter: (value) => {
-            return (value).toFixed(4);
+            return (value).toFixed(decimals);
           },
 
         },
@@ -589,13 +680,25 @@
   var dataText_x = document.getElementById("median").value.replaceAll("'", '"');
   var dataText_y = document.getElementById("swappers").value.replaceAll("'", '"');
   var html_id = "#median_rate_and_number_of_traders"
+  var decimals = 4
+  base_scatter_plot(dataText_x, dataText_y, decimals, html_id);
+  
+  var dataText_x = document.getElementById("gas_used").value.replaceAll("'", '"');
+  var dataText_y = document.getElementById("swappers").value.replaceAll("'", '"');
+  var html_id = "#average_gas_used_and_number_of_traders"
   var decimals = 0
   base_scatter_plot(dataText_x, dataText_y, decimals, html_id);
  
   var dataText_x = document.getElementById("average").value.replaceAll("'", '"');
   var dataText_y = document.getElementById("swappers").value.replaceAll("'", '"');
   var html_id = "#average_rate_and_number_of_traders"
-  var decimals = 0
+  var decimals = 4
+  base_scatter_plot(dataText_x, dataText_y, decimals, html_id);
+ 
+  var dataText_x = document.getElementById("tx_fee").value.replaceAll("'", '"');
+  var dataText_y = document.getElementById("swappers").value.replaceAll("'", '"');
+  var html_id = "#average_tx_fee_and_number_of_traders"
+  var decimals = 4
   base_scatter_plot(dataText_x, dataText_y, decimals, html_id);
 
 </script>
@@ -815,6 +918,222 @@
 </script>
 
 
+<script>
+  async function average_rate_api(){
+    var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
+      var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
+      var platform = document.getElementById("platform").value.replaceAll("'", '"');
+      var dataObject = JSON.parse(dataText_x);
+      for (let index = 0; index < dataObject.length; index++) {
+      const average_rate_element = dataObject[index];
+      if (average_rate_element['platform'] == platform){
+        average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg_gas_used'];  
+      }
+      }
+
+      var options = {
+        series: [{
+        name: 'Monday',
+        data: average_rate_list['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_rate_list['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_rate_list['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_rate_list['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_rate_list['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_rate_list['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_rate_list['Sun']
+      }
+      ],
+        chart: {
+        height: 450,
+        id:'heat3',
+        type: 'heatmap',
+        // toolbar: {
+        //   show:true,
+        //   autoSelected: 'zoom',
+        //   tools:{
+        //     download: true,
+        //     customIcons: [{
+        //         icon: '<a href="https://app.flipsidecrypto.com/velocity/queries/69012a68-c68b-456b-81ce-d84f01712ff6"><span class="iconify" data-icon="fa:database"></span></a>',
+        //         index: 5,
+        //         title: 'Query',
+        //         class: 'custom-icon'
+        //         }]
+        //   } 
+        // }
+        
+      },
+      yaxis:{
+
+        labels:{
+          style:{
+            colors:['white']
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["#c5095e"],
+      title: {
+        text: ''
+      },
+      xaxis: {
+        type: 'category',
+        labels:{
+          style:{
+            colors:'white'
+          }
+        },
+        title:{
+            text:''
+        },
+        categories: ['00', '01', '02', '03', '04', '05', '06', '07','08', '09', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23'],
+      },
+      tooltip: {
+            shared: false,
+            theme: 'dark',
+            
+            y: {
+              formatter: function (val) {
+                return (val).toFixed(4)
+              }
+            }
+          }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#average_gas_used_per_day_hour_and_week_days"), options);
+      chart.render();
+  }   
+  average_rate_api();
+</script>
+
+
+<script>
+  async function average_rate_api(){
+    var average_rate_list = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
+      var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
+      var platform = document.getElementById("platform").value.replaceAll("'", '"');
+      var dataObject = JSON.parse(dataText_x);
+      for (let index = 0; index < dataObject.length; index++) {
+      const average_rate_element = dataObject[index];
+      if (average_rate_element['platform'] == platform){
+        average_rate_list[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg_tx_fee'];  
+      }
+      }
+
+      var options = {
+        series: [{
+        name: 'Monday',
+        data: average_rate_list['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_rate_list['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_rate_list['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_rate_list['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_rate_list['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_rate_list['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_rate_list['Sun']
+      }
+      ],
+        chart: {
+        height: 450,
+        id:'heat4',
+        type: 'heatmap',
+        // toolbar: {
+        //   show:true,
+        //   autoSelected: 'zoom',
+        //   tools:{
+        //     download: true,
+        //     customIcons: [{
+        //         icon: '<a href="https://app.flipsidecrypto.com/velocity/queries/69012a68-c68b-456b-81ce-d84f01712ff6"><span class="iconify" data-icon="fa:database"></span></a>',
+        //         index: 5,
+        //         title: 'Query',
+        //         class: 'custom-icon'
+        //         }]
+        //   } 
+        // }
+        
+      },
+      yaxis:{
+
+        labels:{
+          style:{
+            colors:['white']
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      colors: ["#c5095e"],
+      title: {
+        text: ''
+      },
+      xaxis: {
+        type: 'category',
+        labels:{
+          style:{
+            colors:'white'
+          }
+        },
+        title:{
+            text:''
+        },
+        categories: ['00', '01', '02', '03', '04', '05', '06', '07','08', '09', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23'],
+      },
+      tooltip: {
+            shared: false,
+            theme: 'dark',
+            
+            y: {
+              formatter: function (val) {
+                return (val).toFixed(4)
+              }
+            }
+          }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#average_tx_fee_per_day_hour_and_week_days"), options);
+      chart.render();
+  }   
+  average_rate_api();
+</script>
+
+
 <Script>
   async function update_heatmap(dex){
     var dataText_x = document.getElementById("heat_map_data").value.replaceAll("'", '"');
@@ -822,12 +1141,16 @@
 
     var average_rate = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
     var average_no_swaps = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
+    var average_gas_used = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
+    var average_tx_fee = {'Mon':Array(24).fill(0),'Tue':Array(24).fill(0),'Wed':Array(24).fill(0),'Thu':Array(24).fill(0),'Fri':Array(24).fill(0),'Sat':Array(24).fill(0),'Sun':Array(24).fill(0)};
 
     for (let index = 0; index < dataObject.length; index++) {
       const average_rate_element = dataObject[index];
       if (average_rate_element['platform'] == dex){
         average_rate[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg'];  
         average_no_swaps[average_rate_element['day']][average_rate_element['time']] = average_rate_element['n_txn'];  
+        average_gas_used[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg_gas_used'];  
+        average_tx_fee[average_rate_element['day']][average_rate_element['time']] = average_rate_element['avg_tx_fee'];  
       }
     } 
     heat_1 = [{
@@ -888,8 +1211,68 @@
         data: average_no_swaps['Sun']
       }
       ]
+    heat_3 = [{
+        name: 'Monday',
+        data: average_gas_used['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_gas_used['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_gas_used['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_gas_used['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_gas_used['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_gas_used['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_gas_used['Sun']
+      }
+      ]
+    heat_4 = [{
+        name: 'Monday',
+        data: average_tx_fee['Mon']
+      },
+      {
+        name: 'Tuesday',
+        data: average_tx_fee['Tue']
+      },
+      {
+        name: 'Wednesday',
+        data: average_tx_fee['Wed']
+      },
+      {
+        name: 'Thursday',
+        data: average_tx_fee['Thu']
+      },
+      {
+        name: 'Friday',
+        data: average_tx_fee['Fri']
+      },
+      {
+        name: 'Satturday',
+        data: average_tx_fee['Sat']
+      },
+      {
+        name: 'Sunday',
+        data: average_tx_fee['Sun']
+      }
+      ]
     ApexCharts.exec('heat1', 'updateSeries', heat_1, true);
     ApexCharts.exec('heat2', 'updateSeries', heat_2, true);
+    ApexCharts.exec('heat3', 'updateSeries', heat_3, true);
+    ApexCharts.exec('heat4', 'updateSeries', heat_4, true);
 
   }
 </Script>

@@ -19,6 +19,8 @@ class DashboardView(View):
         context['data'] = data 
         context['median'] = {item['platform']: item['median_of_exch_rate'] for item in data}
         context['average'] = {item['platform']: item['average_of_exch_rate'] for item in data}
+        context['gas_used'] = {item['platform']: item['avg_gas_used'] for item in data}
+        context['tx_fee'] = {item['platform']: item['avg_tx_fee'] for item in data}
         context['swaps'] = {item['platform']: item['number_of_swaps'] for item in data}
         context['swappers'] = {item['platform']: item['number_of_swappers'] for item in data}
 
