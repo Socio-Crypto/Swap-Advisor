@@ -51,7 +51,7 @@ def median_rate_per_platform(network, token_in, token_out, time):
         AND platform != 'curve' --excluded as it has a problem in WETH/USDC convertion rate
         GROUP BY platform
         HAVING "number_of_swaps" > 10 
-        ORDER BY "avg_gas_used" 
+        ORDER BY "median_of_exch_rate" 
     """
    
 

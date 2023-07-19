@@ -387,9 +387,9 @@ function redirectToURL() {
       console.log('element', element)
 
       addRow_1(element['platform'],
-        element['median.exch rate'].toFixed(2),
-        element['avg.exch rate'].toFixed(2),
-        element['avg.gas_used'].toFixed(2),
+        element['median.exch rate'].toFixed(4),
+        element['avg.exch rate'].toFixed(4),
+        element['avg.gas_used'].toFixed(0),
         element['avg.tx_fee'].toFixed(2),
         element['swaps'],
         element['swappers'],)
