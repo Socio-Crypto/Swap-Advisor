@@ -36,12 +36,12 @@ def median_rate_per_platform(network, token_in, token_out, time):
     sql_query = f"""
        	SELECT 
         platform,
-        avg(gas_used) as "avg.gas_used",
-        avg(tx_fee) as "avg.tx_fee",
-        avg(amount_in/amount_out) as "avg.exch rate",
-        median(amount_in/amount_out) as "median.exch rate",
-        count(DISTINCT a.tx_hash) as "swaps",
-        count (DISTINCT a.origin_from_address) as "swappers"
+        avg(gas_used) as "avg_gas_used",
+        avg(tx_fee) as "avg_tx_fee",
+        avg(amount_in/amount_out) as "average_of_exch_rate",
+        median(amount_in/amount_out) as "median_of_exch_rate",
+        count(DISTINCT a.tx_hash) as "number_of_swaps",
+        count (DISTINCT a.origin_from_address) as "number_of_swappers"
         FROM {network}.core.ez_dex_swaps a 
         LEFT JOIN {network}.core.fact_transactions b using(tx_hash)
         WHERE token_in LIKE lower('{token_in}') AND token_out LIKE lower('{token_out}')
@@ -50,8 +50,8 @@ def median_rate_per_platform(network, token_in, token_out, time):
         AND amount_out >0
         AND platform != 'curve' --excluded as it has a problem in WETH/USDC convertion rate
         GROUP BY platform
-        HAVING "swaps" > 10 
-        ORDER BY "median.exch rate" DESC
+        HAVING "number_of_swaps" > 10 
+        ORDER BY "median_of_exch_rate" 
     """
    
 
@@ -192,7 +192,6 @@ def get_stats_table(network, token_in, token_out, time):
         second_query.swappers
         FROM first_query
         JOIN second_query ON first_query.platform = second_query.platform;
-        
     """
     
     return get_result_from_query(sql_query)

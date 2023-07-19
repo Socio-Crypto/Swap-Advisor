@@ -60,8 +60,8 @@ def find_dex(request):
         func2 = lambda: get_stats_table(network, token_in, token_out, time)
         results = runner.run_concurrently(func1, func2)
         data['platform'] = results['func1'][0]['platform']
-        data['median'] = results['func1'][0]['median.exch rate']
-        data['stat'] = results['func1']
+        data['median'] = results['func1'][0]['median_of_exch_rate']
+        data['stat'] = results['func2']
         
         return JsonResponse(data , safe=False)
 
