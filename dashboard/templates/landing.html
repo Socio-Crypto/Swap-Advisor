@@ -5,7 +5,6 @@
 {% load static %}
 
 {% block title %}
-<!-- {% trans 'Accounts' %} -->
 {% endblock %}
 
 {% block breadcrumb %}
@@ -76,21 +75,16 @@
               </div>
 
               <div class="diagram" id="diagram">
-
-                <div class="token-in">
-                  <div class="token">Token In</div>
-                </div>
-                <div class="arrow"></div>
+              
                 <div class="dex">
-                  <div class="dex" id="dexValue" style="font-size: 28px;">dex</div>
+                  <div class="row" style="align-items: center;">
+                    <p style="font-size: 20px;">Best Route :</p><p class="dex" id="dexValue" style="font-size: 20px;">dex</p>
+                  </div>
+                  <p class="route" id="route_value">route_value</p>
                 </div>
-                <div class="arrow"></div>
-                <div class="token-out">
-                  <div class="token">Token Out</div>
-                </div>
-
                 
               </div>
+
               <div id="more_details" style="text-align-last: center; display: none">
                 <button class="btn btn-primary btn-round" style="background: black;" onclick="redirectToURL()">More Details</button>
               </div>
@@ -103,27 +97,27 @@
     <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="card">
-
-            <div class="body">
-                <div class="table-responsive" style="height: 431px;">
-                    <table class="table table-striped" id="ListTable">
-                        <thead>
-                            <tr>
-                                <th style="color:white">Platform</th>
-                                <th style="color:white">Average of Exch. Rate</th>
-                                <th style="color:white">Median of Exch. Rate</th>
-                                <th style="color:white">Number of Swaps</th>
-                                <th style="color:white">Number of Swappers</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
+          <div class="body">
+            <div class="table-responsive" style="height: 431px;">
+              <table class="table table-striped" id="ListTable">
+                <thead>
+                  <tr>
+                    <th style="color:white">Platform</th>
+                    <th style="color:white">Median of Exch. Rate</th>
+                    <th style="color:white">Avg. Exch. Rate</th>
+                    <th style="color:white">Avg. gas used</th>
+                    <th style="color:white">Avg. tx_fee</th>
+                    <th style="color:white">Number of Swaps</th>
+                    <th style="color:white">Number of Swappers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </section>
@@ -203,11 +197,13 @@ $(document).ready(function() {
           // const tokenInSymbol = document.getElementById('tokenIn');
           // const tokenOutSymbol = document.getElementById('tokenOut');
           const dexValue = document.getElementById('dexValue');
+          const routeValue = document.getElementById('route_value');
 
           // tokenInSymbol.textContent = tokenInValue;
           // tokenOutSymbol.textContent = tokenOutValue;
           console.log('response',response)
           dexValue.textContent = response['platform'];
+          routeValue.textContent = response['median'].toFixed(5);
           async function fetchDataAndCallTable() {
             // var dataObject = JSON.parse();
             var isActive = true
@@ -247,7 +243,7 @@ function redirectToURL() {
 
   var url = '/dashboard/' + network + '/' + tokenInValue + '/' + tokenOutValue + '/' + time + '/' + dexValue;
 
-  window.location.href = url
+  window.open(url, '_blank');
 }
 
 </script>
@@ -262,7 +258,7 @@ function redirectToURL() {
  
 
   <script>
-    function addRow_1(a1, a2, a3, a4, a5) {
+    function addRow_1(a1, a2, a3, a4, a5, a6, a7) {
       // Get the table body element in which you want to add row
       let table = document.getElementById("ListTable");
       // Create row element
@@ -274,20 +270,22 @@ function redirectToURL() {
       let c3 = document.createElement("td")
       let c4 = document.createElement("td")
       let c5 = document.createElement("td")
+      let c6 = document.createElement("td")
+      let c7 = document.createElement("td")
 
 
       c1.style.color = "white";
       c2.style.color = "white";
       c3.style.color = "white";
       c4.style.color = "white";
-      // c5.style.color = "white";
+      c5.style.color = "white";
 
       // Insert data to cells
       c1.innerText = a1
       c2.innerText = a2
       c3.innerText = a3
-      // c4.innerText = a4
-      // c5.innerText = a5
+      c4.innerText = a4
+      c5.innerText = a5
    
 
 
@@ -297,13 +295,15 @@ function redirectToURL() {
       row.appendChild(c3);
       row.appendChild(c4);
       row.appendChild(c5);
+      row.appendChild(c6);
+      row.appendChild(c7);
      
 // Create the sparkline chart
 
        
       // Append row to table body
       table.appendChild(row)
-      $(c5).sparkline(a5, {
+      $(c6).sparkline(a6, {
         type: 'line',
         width: '100',
         height: '20',
@@ -317,7 +317,7 @@ function redirectToURL() {
       });
       
       table.appendChild(row)
-      $(c4).sparkline(a4, {
+      $(c7).sparkline(a7, {
         type: 'line',
         width: '100',
         height: '20',
@@ -348,6 +348,8 @@ function redirectToURL() {
       let c3 = document.createElement("th")
       let c4 = document.createElement("th")
       let c5 = document.createElement("th")
+      let c6 = document.createElement("th")
+      let c7 = document.createElement("th")
 
 
       c1.style.color = "white";
@@ -355,13 +357,17 @@ function redirectToURL() {
       c3.style.color = "white";
       c4.style.color = "white";
       c5.style.color = "white";
+      c6.style.color = "white";
+      c7.style.color = "white";
 
       // Insert data to cells
       c1.innerText = "Platform"
-      c2.innerText = "Average of Exch. Rate"
-      c3.innerText = "Median of Exch. Rate"
-      c4.innerText = "Number of Swaps"
-      c5.innerText = "Number of Swappers"
+      c2.innerText = "Median of Exch. Rate"
+      c3.innerText = "Average of Exch. Rate"
+      c4.innerText = "Avg. gas used"
+      c5.innerText = "Avg. tx_fee"
+      c6.innerText = "Number of Swaps"
+      c7.innerText = "Number of Swappers"
       
       // Append cells to row
       row.appendChild(c1);
@@ -369,6 +375,8 @@ function redirectToURL() {
       row.appendChild(c3);
       row.appendChild(c4);
       row.appendChild(c5);
+      row.appendChild(c6);
+      row.appendChild(c7);
 
       table.appendChild(row)
 
@@ -379,15 +387,17 @@ function redirectToURL() {
       console.log('element', element)
 
       addRow_1(element['platform'],
-        element['average of exch. rate'],
-        element['median of exch. rate'],
+        element['median.exch rate'],
+        element['avg.exch rate'],
+        element['avg.gas_used'],
+        element['avg.tx_fee'],
         element['swaps'],
         element['swappers'],)
         
     }
   }
   async function fetchDataAndCallTable() {
-    const tx_data = await fetch('https://api.flipsidecrypto.com/api/v2/queries/c0aaf15d-58ee-4e29-807f-1dce14e8980a/data/latest');
+    const tx_data = await fetch('https://api.flipsidecrypto.com/api/v2/queries/05863b68-4e2a-4de0-be83-a0322e34a2e8/data/latest');
     var tx_datas = await tx_data.json();
     table_1(tx_datas, false)
   }
