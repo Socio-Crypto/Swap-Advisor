@@ -3,6 +3,7 @@
 {% block secondary_menu %}
 {% endblock secondary_menu %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
 <!-- {% trans 'Accounts' %} -->
@@ -56,7 +57,7 @@
       <div class="col-xl-6 col-lg-6 col-md-12">
         <div class="card">
           <div class="body">
-            <h4><strong>Median Rate per Platform</strong></h4>
+            <h4><strong>Median of Exchange Rate</strong></h4>
             <input type="hidden" id="median" value="{{ median }}">
             <div id='medium_rate_per_platform' style="height: 400px;"></div>
             <p class="d-flex justify-content-center"
@@ -96,7 +97,7 @@
       <div class="col-xl-6 col-lg-6 col-md-12">
         <div class="card">
           <div class="body">
-            <h4><strong>Average tx_fee</strong></h4>
+            <h4><strong>Average tx-fee</strong></h4>
             <input type="hidden" id="tx_fee" value="{{ tx_fee }}">
             <div id='average_tx_fee' style="height: 400px;"></div>
             <p class="d-flex justify-content-center"
@@ -116,8 +117,8 @@
               <thead>
                 <tr>
                   <th scope="col">PLATFORM</th>
-                  <th scope="col">Average of Exch. Rate</th>
                   <th scope="col">Median of Exch. Rate</th>
+                  <th scope="col">Average of Exch. Rate</th>
                   <th scope="col">Average gas used</th>
                   <th scope="col">Average tx_fee</th>
                   <th scope="col">Number of Swaps</th>
@@ -128,12 +129,12 @@
                 {% for item in data %}
                 <tr>
                   <td>{{ item.platform }}</td>
-                  <td>{{ item.average_of_exch_rate|floatformat:7 }}</td>
-                  <td>{{ item.median_of_exch_rate|floatformat:7 }}</td>
-                  <td>{{ item.avg_gas_used|floatformat:1 }}</td>
-                  <td>{{ item.avg_tx_fee|floatformat:7 }}</td>
-                  <td>{{ item.number_of_swaps|floatformat:0 }}</td>
-                  <td>{{ item.number_of_swappers|floatformat:0 }}</td>
+                  <td>{{ item.median_of_exch_rate|floatformat:4 }}</td>
+                  <td>{{ item.average_of_exch_rate|floatformat:4 }}</td>
+                  <td>{{ item.avg_gas_used|floatformat:0|intcomma }}</td>
+                  <td>{{ item.avg_tx_fee|floatformat:4 }}</td>
+                  <td>{{ item.number_of_swaps|floatformat:0|intcomma }}</td>
+                  <td>{{ item.number_of_swappers|floatformat:0|intcomma }}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -246,7 +247,7 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong>Average Rate and Number of Traders</strong></h4>
+        <h4><strong>Avg. Rate and Number of Traders</strong></h4>
         <div id='average_rate_and_number_of_traders' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -261,7 +262,7 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong>Average Gas Used and Number of Traders</strong></h4>
+        <h4><strong>Avg. Gas Used and Number of Traders</strong></h4>
         <div id='average_gas_used_and_number_of_traders' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -273,7 +274,7 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong>Average Tx.Fee and Number of Traders</strong></h4>
+        <h4><strong>Avg. Tx.Fee and Number of Traders</strong></h4>
         <div id='average_tx_fee_and_number_of_traders' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -323,9 +324,10 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong>Average Rate per Day Hour and Week Days</strong></h4>
+        <h4><strong>Avg. Rate per Day Hour and Week Days</strong></h4>
         <input type="hidden" id="heat_map_data" value="{{ heat_map_data }}">
         <input type="hidden" id="platform" value="{{ platform }}">
+        <input type="hidden" id="network" value="{{ network }}">
         <div id='average_rate_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -350,7 +352,7 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong>Average Gas Used per Day Hour and Week Days</strong></h4>
+        <h4><strong>Avg. Gas Used per Day Hour and Week Days</strong></h4>
         <div id='average_gas_used_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -362,7 +364,7 @@
   <div class="col-xl-6 col-lg-6 col-md-12">
     <div class="card">
       <div class="body">
-        <h4><strong style="font-size: 21px;">Average Tx. Fee per Day Hour and Week Days</strong></h4>
+        <h4><strong style="font-size: 21px;">Avg. Tx. Fee per Day Hour and Week Days</strong></h4>
         <div id='average_tx_fee_per_day_hour_and_week_days' style="height: 300px;"></div>
         <p class="d-flex justify-content-center"
           style="align-content: center; font-variant-caps: all-petite-caps;">
@@ -380,16 +382,32 @@
 {% block scripts %}
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+<script>
+  function nFormatter(num, decimals) {
+        if (num >= 1000000000) {
+            return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+        }
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        }
+        return num.toFixed(decimals);
+    }
+</script>
 
 <script>
-  async function bar_chart_api_1(dataText, id, decimals) {
+  async function bar_chart_api_1(dataText, id, decimal, y_decimal,title_1, min_1) {
     
  
     var dataObject = JSON.parse(dataText);
+    const dataArray = Object.entries(dataObject).map(([x, y]) => ({ x, y }));
+    dataArray.sort((a, b) => b.y - a.y);
+    console.log('dataObject',dataArray)
 
-    var success_list = Object.values(dataObject);
-    var success_labels = Object.keys(dataObject);
+    var success_list = Object.values(dataArray);
+    var success_labels = dataArray.map(item => item.x);;
     var options = {
       series: [
         {
@@ -482,12 +500,21 @@
         labels: {
           show: true,
           formatter: function (val) {
-            return val.toFixed(decimals); ;
+            return nFormatter(val, y_decimal);
           },
           style:{
             colors:['white']
           }
         },
+        title: {
+          text: title_1,
+          style: {
+            color: ['white']
+          },
+        },
+        min: min_1,
+        // max: max_1
+        // logarithmic: true,
       },
       legend:{
         show:false,
@@ -512,7 +539,7 @@
             
             y: {
               formatter: function (val) {
-                return (val).toFixed(0)
+                return (val).toFixed(decimal)
               }
             }
           }
@@ -527,28 +554,32 @@
 <script>
   var dataText = document.getElementById("median").value.replaceAll("'", '"');
   var id = '#medium_rate_per_platform'
-  bar_chart_api_1(dataText, id, 10)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0.0751)
  
   var dataText = document.getElementById("average").value.replaceAll("'", '"');
   var id = '#average_of_exchange_rate'
-  bar_chart_api_1(dataText, id, 10)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0.0748)
  
   var dataText = document.getElementById("gas_used").value.replaceAll("'", '"');
   var id = '#average_gas_used'
-  bar_chart_api_1(dataText, id, 1)
+  bar_chart_api_1(dataText, id, 0, 0, '', 100000 )
  
+  var network = document.getElementById("network").value.replaceAll("'", '"');
+  var y_title
+  if (network=='avalanche') {y_title = 'avax'} else if (network=='polygon') {y_title = 'matic'} else if (network=='ethereum') {y_title = 'eth'} 
+  
   var dataText = document.getElementById("tx_fee").value.replaceAll("'", '"');
   var id = '#average_tx_fee'
-  bar_chart_api_1(dataText, id, 10)
+  bar_chart_api_1(dataText, id, 3, 3, y_title, 0)
  
  
   var dataText = document.getElementById("swappers").value.replaceAll("'", '"');
   var id = '#number_of_traders_per_platform'
-  bar_chart_api_1(dataText, id, 0)
+  bar_chart_api_1(dataText, id, 0, 0, '', 0)
  
   var dataText = document.getElementById("swaps").value.replaceAll("'", '"');
   var id = '#number_of_trades_per_platform'
-  bar_chart_api_1(dataText, id, 0)
+  bar_chart_api_1(dataText, id, 0, 0, '', 0)
   
   // var dataText = document.getElementById("median_rate_and_traders").value.replaceAll("'", '"');
   // var id = '#median_rate_and_number_of_traders'

@@ -51,7 +51,7 @@ def median_rate_per_platform(network, token_in, token_out, time):
         AND platform != 'curve' --excluded as it has a problem in WETH/USDC convertion rate
         GROUP BY platform
         HAVING "number_of_swaps" > 10 
-        ORDER BY "median_of_exch_rate" 
+        ORDER BY "median_of_exch_rate" DESC
     """
    
 
@@ -93,7 +93,7 @@ def data_per_time(network, token_in, token_out, time):
         AND amount_out >0
         AND block_timestamp  > dateadd('month', -{time}, current_date)
         GROUP BY 1,2,3
-        HAVING n_txn > 10 
+        -- HAVING n_txn > 10 
         ORDER BY 1,2,3
     """
     return get_result_from_query(sql_query)

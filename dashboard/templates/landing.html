@@ -74,13 +74,17 @@
                 <span class="loader" id="loadingSpinner"></span>
               </div>
 
-              <div class="diagram" id="diagram">
+              <div class="diagram" id="diagram" style="display: block;">
               
                 <div class="dex">
                   <div class="row" style="align-items: center;">
-                    <p style="font-size: 20px;">Best Route :</p><p class="dex" id="dexValue" style="font-size: 20px;">dex</p>
+                    <p>Highest Return :</p><p class="dex" id="dexValue" >dex</p>
+                    <p class="route" id="route_value">route_value</p>
                   </div>
-                  <p class="route" id="route_value">route_value</p>
+                  <div class="row" style="align-items: center;">
+                    <p>Green Route :</p><p class="dex" id="dexValue_2" >dex</p>
+                    <p class="route" id="route_value_2">route_value</p>
+                  </div>
                 </div>
                 
               </div>
@@ -198,12 +202,19 @@ $(document).ready(function() {
           // const tokenOutSymbol = document.getElementById('tokenOut');
           const dexValue = document.getElementById('dexValue');
           const routeValue = document.getElementById('route_value');
+          
+          const dexValue_2 = document.getElementById('dexValue_2');
+          const routeValue_2 = document.getElementById('route_value_2');
 
           // tokenInSymbol.textContent = tokenInValue;
           // tokenOutSymbol.textContent = tokenOutValue;
           console.log('response',response)
           dexValue.textContent = response['platform'];
           routeValue.textContent = response['median'].toFixed(5);
+          
+          dexValue_2.textContent = response['platform_2'];
+          routeValue_2.textContent = response['median_2'].toFixed(5);
+          
           async function fetchDataAndCallTable_1() {
             // var dataObject = JSON.parse();
             var isActive = true

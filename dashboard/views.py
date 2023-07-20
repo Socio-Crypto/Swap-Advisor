@@ -26,7 +26,10 @@ class DashboardView(View):
 
         context['heat_map_data'] = results['func2']
         context['platforms'] = list({item['platform'] for item in context['heat_map_data']})
+
         context['platforms'].remove(dexValue)
+
+        context['network'] = network
         context['platform'] = dexValue
 
         # {unique(item['platform']) for item in context['data_time']}
@@ -47,6 +50,61 @@ class LandingView(View):
         return render(request, 'landing.html', context=context)
     
 
+class Cancel(View):
+
+    def get(self, request):
+        context = {}
+
+        import requests
+        import json
+
+        # Replace with your actual API key
+        api_key = "0aa823ca-fc7c-485a-9412-4d96b04e54be"
+
+        # Replace with the unique identifier of the query run to be canceled
+        query_run_id = [
+            "clk6sixg500ozon0tnvl74xj8",
+            "clk6s6kl10064mu0twcrh0oxm",
+            "clk6s5l0t00g8ok0tb043ku74",
+            "clk6rxcyv00hwlt0t2hlibkmd",
+            "clk6rwyb000hrlt0tmg7sxnst",
+        ]
+
+        for item in query_run_id:
+            # JSON-RPC endpoint URL
+            url = "https://api-v2.flipsidecrypto.xyz/json-rpc"
+
+            # Request headers
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": api_key,
+            }
+
+            # Request body
+            request_data = {
+                "jsonrpc": "2.0",
+                "method": "cancelQueryRun",
+                "params": [{"queryRunId": item}],
+                "id": 1,
+            }
+
+            # Make the POST request
+            response = requests.post(url, headers=headers, data=json.dumps(request_data))
+
+            # Check the response
+            if response.status_code == 200:
+                # Query was successfully canceled
+                data = response.json()
+                print("Query was successfully canceled.")
+            else:
+                # Failed to cancel the query
+                print("Failed to cancel the query. Status code:", response.status_code)
+                print("Error message:", response.text)
+            
+            
+        return JsonResponse({'error': 'Invalid request'})
+    
+
 def find_dex(request):
     if request.method == 'POST':
         data = {}
@@ -59,8 +117,15 @@ def find_dex(request):
         func1 = lambda: median_rate_per_platform(network,token_in, token_out, time)
         func2 = lambda: get_stats_table(network, token_in, token_out, time)
         results = runner.run_concurrently(func1, func2)
+        
         data['platform'] = results['func1'][0]['platform']
         data['median'] = results['func1'][0]['median_of_exch_rate']
+
+        sorted_func1 = sorted(results['func1'], key=lambda x: x['avg_gas_used'])
+        
+        data['platform_2'] = sorted_func1[0]['platform']
+        data['median_2'] = sorted_func1[0]['median_of_exch_rate']
+        
         data['stat'] = results['func2']
         
         return JsonResponse(data , safe=False)
