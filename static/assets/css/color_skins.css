@@ -46,8 +46,8 @@
 }
 
 .theme .nav-tabs .nav-link.active {
-	border: 1px solid #E84142 !important;
-	background: #E84142;
+	/* border: 1px solid #E84142 !important;
+	background: #E84142; */
 	color: #fff
 }
 

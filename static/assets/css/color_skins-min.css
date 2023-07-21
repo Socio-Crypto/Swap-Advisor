@@ -46,9 +46,11 @@
 }
 
 .theme .nav-tabs .nav-link.active {
-	border: 1px solid #E84142 !important;
-	background: #E84142;
-	color: #fff
+	border: 1px solid #585151 !important;
+    background: #5e5858;
+	color: #fff;
+	width: 83px;
+    text-align-last: center;
 }
 
 /* .theme .card .header h2:before {

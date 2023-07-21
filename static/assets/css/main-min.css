@@ -59,10 +59,9 @@
   .token-in,
   .token-out,
   .dex {
-	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 10px;
+	padding: 82px 38px 0px 16px;
   }
   
   .symbol {
@@ -4343,15 +4342,16 @@ body {
 	margin: 0;
 	margin-right: 5px;
 	background-color: transparent;
-	border: 1px solid #E3E3E3;
+	/* border: 1px solid #E3E3E3; */
 	border-radius: 30px;
 	font-size: 14px;
-	padding: 5px 23px;
+	padding: 1px 23px 1px 1px;
 	line-height: 1.5
 }
 
 .nav-tabs>.nav-item>.nav-link:hover {
-	background-color: transparent
+	background-color: transparent;
+	border: none !important;
 }
 
 .nav-tabs>.nav-item>.nav-link.active {
@@ -17446,9 +17446,9 @@ img {
 	position: absolute
 }
 
-.sidebar.h_menu .menu li>a:hover:before {
+/* .sidebar.h_menu .menu li>a:hover:before {
 	width: 100%
-}
+} */
 
 .sidebar.h_menu .menu li.active.open>a:before {
 	content: '';

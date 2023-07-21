@@ -24,105 +24,139 @@
         <div class="card"></div>
       </div>
     </div>
-    <div class="center-div">
-      <div class="row clearfix" style="width: 40%;" id="show_dex_card">
-        <div class="col-xl-12 col-lg-12 col-md-12">
-          <div class="card">
-            <div class="body">
-              
-                <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
-                  <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
-                    Network :
-                  </div>
-                  <div class="col-xl-8 col-lg-8 col-md-8">
-                    <select class="ice-cream" name="network" , id="network" style="height:40px ;margin-left: 100px;">
-                      <option value="avalanche" selected> Avalanche </option>
-                      <option value="polygon"> Polygon </option>
-                      <option value="ethereum"> Ethereum </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
-                  <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
-                    Duration :
-                  </div>
-                  <div class="col-xl-8 col-lg-8 col-md-8">
-                    <select class="ice-cream" name="time" , id="time" style="height:60px ;margin-left: 100px; width: %;">
-                      <option value="1" selected> 1 month </option>
-                      <option value="3"> 3 month </option>
-                      <option value="6"> 6 month </option>
-                    </select>
-                  </div>
-                </div>
-
-              <div class="row clearfix">
-                
-                <div class="col-xl-6 col-lg-6 col-md-12">
-                  <input type="text" class="form-control" id="token_in" placeholder="Token in" style="color: white; height: 37px;"/>                                   
-                 
-                </div>
-
-                <div class="col-xl-6 col-lg-6 col-md-12">
-                  <input type="text" class="form-control" id="token_out" placeholder="Token out" style="color: white; height: 37px;"/>                                   
-                  
-                </div>
-    
-              </div>
-
-              <div class="row clearfix spin_div" id="spin_div" >
-                <span class="loader" id="loadingSpinner"></span>
-              </div>
-
-              <div class="diagram" id="diagram">
-              
-                <div class="dex">
-                  <div class="row" style="align-items: center; align-items: baseline;">
-                    <p>Highest Return :</p><p class="dex" id="dexValue" >dex</p> <span>| &nbsp</span>
-                    <p class="route" id="route_value">route_value</p>
-                  </div>
-                  <div class="row" style="align-items: center; align-items: baseline;">
-                    <p>Green Route :</p><p class="dex" id="dexValue_2" >dex</p> <span>| &nbsp</span>
-                    <p class="route" id="route_value_2">route_value</p>
-                  </div>
-                </div>
-                
-              </div>
-
-              <div id="more_details" style="text-align-last: center; display: none">
-                <button class="btn btn-primary btn-round" style="background: black;" onclick="redirectToURL()">More Details</button>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row clearfix">
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="card">
-          <div class="body">
-            <div class="table-responsive" style="height: 431px;">
-              <table class="table table-striped" id="ListTable">
-                <thead>
-                  <tr>
-                    <th style="color:white">Platform</th>
-                    <th style="color:white">Median of Exch. Rate</th>
-                    <th style="color:white">Avg. Exch. Rate</th>
-                    <th style="color:white">Avg. gas used</th>
-                    <th style="color:white">Avg. tx_fee</th>
-                    <th style="color:white">Number of Swaps</th>
-                    <th style="color:white">Number of Swappers</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+      <div class="col-lg-12">
+        <div class="tab-content">
+          <div class="tab-pane active" id="swap">
+            <div class="center-div">
+              <div class="row clearfix" style="width: 40%;" id="show_dex_card">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                  <div class="card">
+                    <div class="body">
+    
+                      <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
+                        <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
+                          Network :
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8">
+                          <select class="ice-cream" name="network" , id="network" style="height:40px ;margin-left: 100px;">
+                            <option value="avalanche" selected> Avalanche </option>
+                            <option value="polygon"> Polygon </option>
+                            <option value="ethereum"> Ethereum </option>
+                          </select>
+                        </div>
+                      </div>
+    
+                      <div class="row clearfix" style="margin-bottom: 26px; align-items: center">
+                        <div class="col-xl-4 col-lg-4 col-md-4" style="text-align-last: right;">
+                          Duration :
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8">
+                          <select class="ice-cream" name="time" , id="time"
+                            style="height:60px ;margin-left: 100px; width: %;">
+                            <option value="1" selected> 1 month </option>
+                            <option value="3"> 3 month </option>
+                            <option value="6"> 6 month </option>
+                          </select>
+                        </div>
+                      </div>
+    
+                      <div class="row clearfix">
+    
+                        <div class="col-xl-6 col-lg-6 col-md-12">
+                          <input type="text" class="form-control" id="token_in" placeholder="Token in"
+                            style="color: white; height: 37px;" />
+    
+                        </div>
+    
+                        <div class="col-xl-6 col-lg-6 col-md-12">
+                          <input type="text" class="form-control" id="token_out" placeholder="Token out"
+                            style="color: white; height: 37px;" />
+    
+                        </div>
+    
+                      </div>
+    
+                      <div class="row clearfix spin_div" id="spin_div">
+                        <span class="loader" id="loadingSpinner"></span>
+                      </div>
+    
+                      <div class="diagram" id="diagram">
+    
+                        <div class="dex">
+                          <!-- <div class="row" style="align-items: center; align-items: baseline;">
+                            <p>Highest Return :</p>
+                            <p class="dex" id="dexValue">dex</p> <span>| &nbsp</span>
+                            <p class="route" id="route_value">route_value</p>
+                          </div> -->
+                          <!-- <div class="row" style="align-items: center; align-items: baseline;">
+                            <p>Green Route :</p>
+                            <p class="dex" id="dexValue_2">dex</p> <span>| &nbsp</span>
+                            <p class="route" id="route_value_2">route_value</p>
+                          </div> -->
+
+                          <div class="card green-card" style="border-color: #176B87;">
+                            <div class="row" style=" align-items: baseline; place-content: center;">
+                              <p class="dex highest-return-dex" id="dexValue" style="color: #00877d;">dex</p>
+                              <p class="route" id="route_value" >route_value</p>
+                            </div>
+                            <span class="green-span" style="color: #176B87;">Highest Return</span>
+                          </div>
+                         
+                          <div class="card green-card" style="border-color: #176B87;">
+                            <div class="row" style=" align-items: baseline; place-content: center;">
+                              <p class="dex highest-return-dex" id="dexValue_2" style="color: #00877d;">dex</p>
+                              <p class="route" id="route_value_2" >route_value</p>
+                            </div>
+                            <span class="green-span" style="color: #176B87;">Green Route</span>
+                          </div>
+                        </div>
+    
+                      </div>
+    
+                      <div id="more_details" style="text-align-last: center; display: none; margin-top: 47px;">
+                        <button class="btn btn-primary btn-round" style="background: black;" onclick="redirectToURL()">More
+                          Details</button>
+                      </div>
+    
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                  <div class="body">
+                    <div class="table-responsive" style="height: 431px;">
+                      <table class="table table-striped" id="ListTable">
+                        <thead>
+                          <tr>
+                            <th style="color:white">Platform</th>
+                            <th style="color:white">Median of Exch. Rate</th>
+                            <th style="color:white">Avg. Exch. Rate</th>
+                            <th style="color:white">Avg. gas used</th>
+                            <th style="color:white">Avg. tx_fee</th>
+                            <th style="color:white">Number of Swaps</th>
+                            <th style="color:white">Number of Swappers</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="bridge">
+            
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 

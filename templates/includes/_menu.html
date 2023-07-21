@@ -8,18 +8,11 @@
         <div class="row clearfix">
             <div class="col-12">
                 <div class="menu">
-                    <ul class="list" style="text-align-last: center;">
+                    <ul style="    place-content: center;
+                    " class="nav nav-tabs">
                         <li class="header">MENU</li>
-                        {% if 'dashboard' == current_path %}
-                            <li class="{% if 'dashboard' == current_path %}active open{% endif %}">
-                                <a href="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" style="margin-bottom: 4px;">
-                                        <path fill="currentColor"
-                                            d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" />
-                                    </svg>{% trans "Swap" %}
-                                </a>
-                            </li>
-                        {% endif %}
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#swap">Swap</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#bridge">Bridge</a></li>
                     </ul>
                 </div>
             </div>
