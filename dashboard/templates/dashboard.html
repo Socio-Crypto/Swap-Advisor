@@ -113,7 +113,7 @@
         <div class="card">
           <div id="chart2-container"></div>
           <div class="body table-responsive">
-            <table class="table m-b-0 table-striped table-dark table-borderless table-black" id="network_table">
+            <table class="table m-b-0 table-striped table-dark table-borderless table-black" id="network_table" style="background-color:#3c5166">
               <thead>
                 <tr>
                   <th scope="col">PLATFORM</th>
@@ -554,11 +554,11 @@
 <script>
   var dataText = document.getElementById("median").value.replaceAll("'", '"');
   var id = '#medium_rate_per_platform'
-  bar_chart_api_1(dataText, id, 3, 3, '', 0.0751)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0.074)
  
   var dataText = document.getElementById("average").value.replaceAll("'", '"');
   var id = '#average_of_exchange_rate'
-  bar_chart_api_1(dataText, id, 3, 3, '', 0.0748)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0.073)
  
   var dataText = document.getElementById("gas_used").value.replaceAll("'", '"');
   var id = '#average_gas_used'

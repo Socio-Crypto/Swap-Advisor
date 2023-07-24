@@ -84,17 +84,6 @@
                       <div class="diagram" id="diagram">
     
                         <div class="dex">
-                          <!-- <div class="row" style="align-items: center; align-items: baseline;">
-                            <p>Highest Return :</p>
-                            <p class="dex" id="dexValue">dex</p> <span>| &nbsp</span>
-                            <p class="route" id="route_value">route_value</p>
-                          </div> -->
-                          <!-- <div class="row" style="align-items: center; align-items: baseline;">
-                            <p>Green Route :</p>
-                            <p class="dex" id="dexValue_2">dex</p> <span>| &nbsp</span>
-                            <p class="route" id="route_value_2">route_value</p>
-                          </div> -->
-
                           <div class="card green-card" style="border-color: #176B87;">
                             <div class="row" style=" align-items: baseline; place-content: center;">
                               <p class="dex highest-return-dex" id="dexValue" style="color: #00877d;">dex</p>
@@ -152,6 +141,40 @@
           </div>
           <div class="tab-pane" id="bridge">
             
+            <div class="center-div">
+              <div class="row clearfix" style="width: 40%;" id="show_dex_card">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                  <div class="card">
+                    <div class="body">
+                      <div class="card bridge-card" style="border-color: #176B87;">
+                        <div class="row">
+                          <div class="col-xl-6 col-lg-6 col-md-6" style="width:93%">
+                            <select class="form-control show-tick">
+                              <option value="avalanche" selected> Avalanche </option>
+                            <option value="polygon"> Polygon </option>
+                            <option value="ethereum"> Ethereum </option>
+                          </select>
+                          </div>
+                          <div class="col-xl-6 col-lg-6 col-md-6">
+                            <select class="form-control show-tick" >
+                              <option value="avalanche" selected>  </option>
+                              <!-- <option value="polygon"> Polygon </option> -->
+                              <!-- <option value="ethereum"> Ethereum </option> -->
+                          </select>
+                          </div>
+                        </div>
+                        <span class="bridge-span" style="color: #176B87;">From</span>
+                      </div>
+    
+                      <div class="row clearfix">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+           
           </div>
         </div>
       </div>
@@ -163,9 +186,30 @@
 {% endblock %}
 
 {% block scripts %}
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+  integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+<script>
+  // Initialize Select2 on the dropdown element
+  $(document).ready(function() {
+    $("#dropdown").selectize();
+  });
+</script>
 
 <script>
 
@@ -291,11 +335,6 @@ function redirectToURL() {
   window.open(url, '_blank');
 }
 
-</script>
-<script>
-  $(document).ready(function() {
-    $('#network').select2();
-  });
 </script>
 <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
 <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-sparkline.min.js"></script>

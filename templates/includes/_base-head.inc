@@ -1,7 +1,7 @@
 {% load static %}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{% block title %} Swap Advisor {% endblock title %}</title>
+<title>{% block title %} Green Routes {% endblock title %}</title>
 <!-- CSS -->
 <!-- Add Material font (Roboto) and Material icon as needed -->
 <link
