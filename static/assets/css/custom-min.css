@@ -1,5 +1,5 @@
 section.content::before {
-    background: #27374D;
+    background: #343F55;
 }
 
 .green-card {
@@ -22,7 +22,7 @@ section.content::before {
 	position: absolute;
 	top: -16px;
 	left: 11px;
-	background-color: #274761;
+	background-color: #006079;
 	color: green;
 	padding: 2px 6px;
 	border-radius: 5px;
@@ -34,7 +34,7 @@ section.content::before {
 	position: absolute;
 	top: -35px;
 	left: 0px;
-	background-color: #274761;
+	background-color: #006079;
 	color: #ffffff;
 	padding: 2px 6px;
 	border-radius: 5px;
