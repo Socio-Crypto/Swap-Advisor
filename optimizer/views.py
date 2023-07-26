@@ -5,8 +5,6 @@ import json
 from django.http import HttpResponse
 from .services import get_routes
 import heapq
-import networkx as nx
-
 
 class Graph:
     def __init__(self, ):
@@ -107,22 +105,22 @@ class SaveDataInJsonView(View):
         return HttpResponse('The JSON files have been updated with new data!')
 
 
-def networkx_path(paths, token_1, token_2):
-    # Create an empty directed graph
-    G = nx.DiGraph()
+# def networkx_path(paths, token_1, token_2):
+#     # Create an empty directed graph
+#     G = nx.DiGraph()
 
-    # Add edges to the graph with their associated costs and identifiers
-    for source, target, cost, dex in paths:
-        G.add_edge(source, target, weight=cost, dex=dex)
+#     # Add edges to the graph with their associated costs and identifiers
+#     for source, target, cost, dex in paths:
+#         G.add_edge(source, target, weight=cost, dex=dex)
 
-    # Use Dijkstra's algorithm to find the best path from 'A' to 'E'
-    best_path_nodes = nx.shortest_path(G, source=token_1, target=token_2, weight='weight')
-    best_path_cost = nx.shortest_path_length(G, source=token_1, target=token_2, weight='weight')
+#     # Use Dijkstra's algorithm to find the best path from 'A' to 'E'
+#     best_path_nodes = nx.shortest_path(G, source=token_1, target=token_2, weight='weight')
+#     best_path_cost = nx.shortest_path_length(G, source=token_1, target=token_2, weight='weight')
 
-    # Extract the dexs for the best path
-    best_path_dexs = [(G[u][v]['dex']) for u, v in zip(best_path_nodes[:-1], best_path_nodes[1:])]
+#     # Extract the dexs for the best path
+#     best_path_dexs = [(G[u][v]['dex']) for u, v in zip(best_path_nodes[:-1], best_path_nodes[1:])]
 
-    return best_path_nodes, best_path_cost, best_path_dexs
+#     return best_path_nodes, best_path_cost, best_path_dexs
 
 
 def read_data_from_json(network):
