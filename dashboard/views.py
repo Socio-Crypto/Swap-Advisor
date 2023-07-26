@@ -108,26 +108,33 @@ class Cancel(View):
 def find_dex(request):
     if request.method == 'POST':
         data = {}
-        network = request.POST.get('network')
-        token_in = request.POST.get('token_in')
-        token_out = request.POST.get('token_out')
-        time = request.POST.get('time')
+        data['error'] = 0
+        try:
+            network = request.POST.get('network')
+            token_in = request.POST.get('token_in')
+            token_out = request.POST.get('token_out')
+            time = request.POST.get('time')
 
-        runner = ConcurrentRunner()
-        func1 = lambda: median_rate_per_platform(network,token_in, token_out, time)
-        func2 = lambda: get_stats_table(network, token_in, token_out, time)
-        results = runner.run_concurrently(func1, func2)
-        
-        data['platform'] = results['func1'][0]['platform']
-        data['median'] = results['func1'][0]['median_of_exch_rate']
+            runner = ConcurrentRunner()
+            func1 = lambda: median_rate_per_platform(network,token_in, token_out, time)
+            func2 = lambda: get_stats_table(network, token_in, token_out, time)
+            results = runner.run_concurrently(func1, func2)
+            
+            data['platform'] = results['func1'][0]['platform']
+            data['median'] = results['func1'][0]['median_of_exch_rate']
 
-        sorted_func1 = sorted(results['func1'], key=lambda x: x['avg_gas_used'])
-        
-        data['platform_2'] = sorted_func1[0]['platform']
-        data['median_2'] = sorted_func1[0]['median_of_exch_rate']
-        
-        data['stat'] = results['func2']
-        
+            sorted_func1 = sorted(results['func1'], key=lambda x: x['avg_gas_used'])
+            
+            data['platform_2'] = sorted_func1[0]['platform']
+            data['median_2'] = sorted_func1[0]['median_of_exch_rate']
+            
+            data['stat'] = results['func2']
+        except:
+            data['error'] = 1
         return JsonResponse(data , safe=False)
 
     return JsonResponse({'error': 'Invalid request'})
+
+
+
+

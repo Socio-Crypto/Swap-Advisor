@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
 
     'dashboard',
+    'optimizer',
 ]
 
 MIDDLEWARE = [

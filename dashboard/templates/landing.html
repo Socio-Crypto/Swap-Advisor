@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-8">
                           <select class="ice-cream" name="network" , id="network" style="height:40px ;margin-left: 100px;">
-                            <option value="avalanche" selected> Avalanche </option>
+                            <option value="avalanche" selected><span><img src="{% static 'images/avalanche.svg' %}" alt=""> Avalanche</span> </option>
                             <option value="polygon"> Polygon </option>
                             <option value="ethereum"> Ethereum </option>
                           </select>
@@ -102,7 +102,19 @@
                         </div>
     
                       </div>
-    
+                      
+                      <div  id="error_route" style="display: none;">
+                        <div class="dex">
+                          <div class="card green-card" style="border-color: #bf0202;">
+                            <div class="row" style=" align-items: baseline; place-content: center;">
+                              <p class="route" id="error_message" style="padding: 20px 11px 6px 46px;">There is no route available. Please double check your Token IDs and network.</p>
+                            </div>
+                            <span class="green-span" style="color: #bf0202;">Error</span>
+                          </div>
+                        </div>
+                      </div>
+
+
                       <div id="more_details" style="text-align-last: center; display: none; margin-top: 47px;">
                         <button class="btn btn-primary btn-round" style="background: black;" onclick="redirectToURL()">More
                           Details</button>
@@ -149,19 +161,20 @@
                       <div class="card bridge-card" style="border-color: #343f55;">
                         <div class="row">
                           <div class="col-xl-6 col-lg-6 col-md-6" style="width:93%">
-                            <select class="form-control show-tick">
+                            <select class="form-control show-tick" id="bridge_network_1">
                               <option value="avalanche" selected> Avalanche </option>
-                            <option value="polygon"> Polygon </option>
-                            <option value="ethereum"> Ethereum </option>
+                              <option value="polygon"> Polygon </option>
+                              <option value="ethereum"> Ethereum </option>
+                              <option value="bsc"> binance </option>
+                              <option value="arbitrum"> arbitrum </option>
+                              <option value="optimism"> optimism </option>
                           </select>
                           </div>
                           <div class="col-xl-6 col-lg-6 col-md-6">
-                            <select class="form-control show-tick" >
-                              <option value="avalanche" selected>  </option>
-                              <!-- <option value="polygon"> Polygon </option> -->
-                              <!-- <option value="ethereum"> Ethereum </option> -->
-                          </select>
+                            <input type="text" class="form-control" id="bridge_token_1" placeholder="ُSymbol In"
+                              style="color: white; height: 37px;" />
                           </div>
+                          
                         </div>
                         <span class="bridge-span" style="color: #343f55;">From</span>
                       </div>
@@ -169,23 +182,36 @@
                       <div class="card bridge-card" style="border-color: #343f55;">
                         <div class="row">
                           <div class="col-xl-6 col-lg-6 col-md-6" style="width:93%">
-                            <select class="form-control show-tick">
-                              <option value="avalanche" selected> Avalanche </option>
-                            <option value="polygon"> Polygon </option>
-                            <option value="ethereum"> Ethereum </option>
+                            <select class="form-control show-tick" id="bridge_network_2">
+                              <option value="polygon" selected> Polygon </option>
+                              <option value="avalanche" > Avalanche </option>
+                              <option value="ethereum"> Ethereum </option>
+                              <option value="bsc"> binance </option>
+                              <option value="arbitrum"> arbitrum </option>
+                              <option value="optimism"> optimism </option>
                           </select>
                           </div>
                           <div class="col-xl-6 col-lg-6 col-md-6">
-                            <select class="form-control show-tick" >
-                              <option value="avalanche" selected>  </option>
-                              <!-- <option value="polygon"> Polygon </option> -->
-                              <!-- <option value="ethereum"> Ethereum </option> -->
-                          </select>
+                            <input type="text" class="form-control" id="bridge_token_2" placeholder="Symbol Out"
+                              style="color: white; height: 37px;" />
                           </div>
                         </div>
                         <span class="bridge-span" style="color: #343f55;">To</span>
                       </div>
+
+                      <div class="diagram" id="bridge_diagram" >
     
+                          <div class="card green-card" style="border-color: #FF9F00;">
+                            <div class="row" style=" align-items: baseline; place-content: center;">
+                              <p class="dex highest-return-dex" id="bridge_route_1" style="color: #00877d;">dex</p>
+                              <p class="dex highest-return-dex" id="bridge_route_2" style="color: #00877d;">dex</p>
+                            </div>
+                            <span class="green-span" style="color: #FF9F00;">Route</span>
+                          </div>
+                         
+    
+                      </div>
+
                       <div class="row clearfix">
                       </div>
                     </div>
@@ -207,19 +233,8 @@
 
 {% block scripts %}
 
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
-  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
-  integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css" integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js" integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -268,6 +283,8 @@ $(document).ready(function() {
     // Check if both fields are filled
     if (tokenInValue && tokenOutValue) {
       diagram.style.display = 'none';
+      const error_1 = document.getElementById('error_route');
+      error_1.style.display = 'none';
       const button_div = document.getElementById('more_details');
       button_div.style.display = 'none';
 
@@ -296,6 +313,7 @@ $(document).ready(function() {
         success: function(response) {
           hideLoadingSpinner()
           const diagram = document.getElementById('diagram');
+          const error_1 = document.getElementById('error_route');
           // const tokenInSymbol = document.getElementById('tokenIn');
           // const tokenOutSymbol = document.getElementById('tokenOut');
           const dexValue = document.getElementById('dexValue');
@@ -307,23 +325,31 @@ $(document).ready(function() {
           // tokenInSymbol.textContent = tokenInValue;
           // tokenOutSymbol.textContent = tokenOutValue;
           console.log('response',response)
+          if (response['error'] == 1){
+            error_1.style.display = 'flex';
+          }
+
           dexValue.textContent = response['platform'];
           routeValue.textContent = response['median'].toFixed(5);
           
           dexValue_2.textContent = response['platform_2'];
           routeValue_2.textContent = response['median_2'].toFixed(5);
-          
-          async function fetchDataAndCallTable_1() {
+          if (response['error'] == 0){
+            diagram.style.display = 'flex';
+            
+            const button_div = document.getElementById('more_details');
+            button_div.style.display = 'block';
+            async function fetchDataAndCallTable_1() {
             // var dataObject = JSON.parse();
             var isActive = true
             table_1(response['stat'], isActive);
+            }
+            fetchDataAndCallTable_1()
+            // Show the diagram
           }
-          fetchDataAndCallTable_1()
-          // Show the diagram
-          diagram.style.display = 'flex';
+         
           
-          const button_div = document.getElementById('more_details');
-          button_div.style.display = 'block';
+
         },
         error: function(xhr, status, error) {
           // Handle any errors that occur during the AJAX request
@@ -360,7 +386,6 @@ function redirectToURL() {
 <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-sparkline.min.js"></script>
 <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-data-adapter.min.js"></script>
  
-
   <script>
     function addRow_1(a1, a2, a3, a4, a5, a6, a7) {
       // Get the table body element in which you want to add row
@@ -508,4 +533,165 @@ function redirectToURL() {
   fetchDataAndCallTable()
 </script>
 
+
+<!-- Start Bridge -->
+
+<script>
+
+  $(document).ready(function() {
+  
+    function showLoadingSpinner() {
+      const spinner = document.getElementById('loadingSpinner');
+      spinner.style.display = 'block';
+      
+      const spinner_div = document.getElementById('spin_div');
+      spinner_div.style.display = 'flex';
+      
+    }
+  
+    function hideLoadingSpinner() {
+      const spinner = document.getElementById('loadingSpinner');
+      spinner.style.display = 'none';
+      const spinner_div = document.getElementById('spin_div');
+      spinner_div.style.display = 'none';
+    }
+
+    function sendAjaxRequest() {
+      // Get the values from the input fields
+      var network1 = document.getElementById('bridge_network_1').value;
+      var network2 = document.getElementById('bridge_network_2').value;
+      var token1 = document.getElementById('bridge_token_1').value;
+      var token2 = document.getElementById('bridge_token_2').value;
+  
+      // Check if both fields are filled
+      if (token1 && token2) {
+        bridge_diagram.style.display = 'none';
+        // const button_div = document.getElementById('more_details');
+        // button_div.style.display = 'none';
+  
+      // showLoadingSpinner()
+  
+      //  var data = {
+      //     bridge_network_1: network1,
+      //     bridge_network_2: network2,
+      //     bridge_token_1: token1,
+      //     bridge_token_2: token2,
+      //     csrfmiddlewaretoken: '{{ csrf_token }}'
+      //   };
+  
+        $.ajax({
+          method: 'POST',
+          url: "{% url 'find_path' %}",
+         
+          data: {
+            bridge_network_1: network1,
+            bridge_network_2: network2,
+            bridge_token_1: token1,
+            bridge_token_2: token2,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(response) {
+            // hideLoadingSpinner()
+            const bridge_diagram = document.getElementById('bridge_diagram');
+            const bridge_route_1 = document.getElementById('bridge_route_1');
+            const bridge_route_2 = document.getElementById('bridge_route_2');
+            // const tokenOutSymbol = document.getElementById('tokenOut');
+            // const dexValue = document.getElementById('dexValue');
+            // const routeValue = document.getElementById('route_value');
+            
+            // const dexValue_2 = document.getElementById('dexValue_2');
+            // const routeValue_2 = document.getElementById('route_value_2');
+  
+            // tokenInSymbol.textContent = tokenInValue;
+            // tokenOutSymbol.textContent = tokenOutValue;
+            console.log(response['path_1'])
+            bridge_route_1.textContent = response['path_1'];
+            bridge_route_2.textContent = response['path_2'];
+            // routeValue.textContent = response['median'].toFixed(5);
+            
+            // dexValue_2.textContent = response['platform_2'];
+            // routeValue_2.textContent = response['median_2'].toFixed(5);
+            
+           
+            // Show the diagram
+            bridge_diagram.style.display = 'flex';
+            
+          },
+          error: function(xhr, status, error) {
+            // Handle any errors that occur during the AJAX request
+            console.error('Error:', error);
+          }
+        });
+      }
+  
+    }
+  
+    // Add event listeners to the input fields
+    document.getElementById('bridge_network_1').addEventListener('change', sendAjaxRequest);
+    document.getElementById('bridge_network_2').addEventListener('change', sendAjaxRequest);
+    document.getElementById('bridge_token_1').addEventListener('input', sendAjaxRequest);
+    document.getElementById('bridge_token_2').addEventListener('input', sendAjaxRequest);
+  
+  })
+  </script>
+
+<!-- <script>
+  document.addEventListener("DOMContentLoaded", function() {
+  // Get the select element by its ID
+  var selectElement = document.getElementById("bridge_network_1");
+
+  // Attach a change event listener to the select element
+  selectElement.addEventListener("change", function() {
+    // Get the selected option value
+    var selectedValue = this.value;
+    console.log('testststststts')
+  });
+});
+</script> -->
+
+<script>
+  $(document).ready(function() {
+  // Attach a change event listener to the select element
+  $('#bridge_network_1').change(function() {
+    // Get the selected option value
+    var selectedValue = $(this).val();
+    console.log(selectedValue)
+    //  $('#bridge_network_2 option[value="' + selectedValue + '"]').remove();
+     const selectElement = document.getElementById("bridge_network_2");
+      //  selectElement.remove(selectedValue);
+      const optionToAlter = selectElement.querySelector(`option[value="${selectedValue}"]`);
+      selectElement.options.length = 0;
+      $(selectElement).select2('destroy'); // Replace 'select2' with the appropriate method for your custom select library
+
+// Step 4: Recreate the custom select element (example for Select2)
+$(selectElement).select2();
+      // $(selectElement).select2(); 
+  // Manually refresh the custom select's UI (Example: Select2)
+  // Replace 'select2' with the appropriate method for your custom select library
+  // $(selectElement).trigger('change.select2');
+
+  //     while (selectElement.options.length > 0) {
+  //   selectElement.remove(0);
+  // }
+  // Alternatively, you can find the option based on its index
+  // const optionIndexToAlter = 2; // For example, altering the third option (index starts from 0)
+  // const optionToAlter = selectElement.options[optionIndexToAlter];
+  //   console.log(optionToAlter)
+  // if (optionToAlter) {
+  //   // Step 3: Update the option's properties (text and/or value)
+  //   optionToAlter.textContent = "Altered Item 3"; // Update the display text
+  //   optionToAlter.value = "modified-value"; // Update the value (optional)
+  //   console.log(optionToAlter, '2')
+  //   // $("#bridge_network_2").trigger("change"); // Manually trigger change event to update the Select2 UI
+
+
+  // }
+
+    // Do something with the selected value (for example, display an alert)
+    // alert('Selected option: ' + selectedValue);
+  });
+});
+</script>
+
+<!-- End Bridge -->
 {% endblock %}
