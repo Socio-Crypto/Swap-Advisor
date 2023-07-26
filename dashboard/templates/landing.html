@@ -39,7 +39,7 @@
                           Network :
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-8">
-                          <select class="ice-cream" name="network" , id="network" style="height:40px ;margin-left: 100px;">
+                          <select class="ice-cream" name="network"  id="network" style="height:40px ;margin-left: 100px;">
                             <option value="avalanche" selected><span><img src="{% static 'images/avalanche.svg' %}" alt=""> Avalanche</span> </option>
                             <option value="polygon"> Polygon </option>
                             <option value="ethereum"> Ethereum </option>
@@ -171,7 +171,7 @@
                           </select>
                           </div>
                           <div class="col-xl-6 col-lg-6 col-md-6">
-                            <input type="text" class="form-control" id="bridge_token_1" placeholder="ُSymbol In"
+                            <input type="text" class="form-control" id="bridge_token_1" placeholder="Symbol In"
                               style="color: white; height: 37px;" />
                           </div>
                           
@@ -648,50 +648,6 @@ function redirectToURL() {
   });
 });
 </script> -->
-
-<script>
-  $(document).ready(function() {
-  // Attach a change event listener to the select element
-  $('#bridge_network_1').change(function() {
-    // Get the selected option value
-    var selectedValue = $(this).val();
-    console.log(selectedValue)
-    //  $('#bridge_network_2 option[value="' + selectedValue + '"]').remove();
-     const selectElement = document.getElementById("bridge_network_2");
-      //  selectElement.remove(selectedValue);
-      const optionToAlter = selectElement.querySelector(`option[value="${selectedValue}"]`);
-      selectElement.options.length = 0;
-      $(selectElement).select2('destroy'); // Replace 'select2' with the appropriate method for your custom select library
-
-// Step 4: Recreate the custom select element (example for Select2)
-$(selectElement).select2();
-      // $(selectElement).select2(); 
-  // Manually refresh the custom select's UI (Example: Select2)
-  // Replace 'select2' with the appropriate method for your custom select library
-  // $(selectElement).trigger('change.select2');
-
-  //     while (selectElement.options.length > 0) {
-  //   selectElement.remove(0);
-  // }
-  // Alternatively, you can find the option based on its index
-  // const optionIndexToAlter = 2; // For example, altering the third option (index starts from 0)
-  // const optionToAlter = selectElement.options[optionIndexToAlter];
-  //   console.log(optionToAlter)
-  // if (optionToAlter) {
-  //   // Step 3: Update the option's properties (text and/or value)
-  //   optionToAlter.textContent = "Altered Item 3"; // Update the display text
-  //   optionToAlter.value = "modified-value"; // Update the value (optional)
-  //   console.log(optionToAlter, '2')
-  //   // $("#bridge_network_2").trigger("change"); // Manually trigger change event to update the Select2 UI
-
-
-  // }
-
-    // Do something with the selected value (for example, display an alert)
-    // alert('Selected option: ' + selectedValue);
-  });
-});
-</script>
 
 <!-- End Bridge -->
 {% endblock %}
