@@ -54,7 +54,6 @@ def median_rate_per_platform(network, token_in, token_out, time):
         ORDER BY "median_of_exch_rate" DESC
     """
    
-
     return get_result_from_query(sql_query)
 
 
@@ -171,7 +170,7 @@ def get_stats_table(network, token_in, token_out, time):
             zeroifnull(count(DISTINCT tx_hash)) as n_swaps,
             count(DISTINCT origin_from_address) as n_swappers
             FROM {network}.core.ez_dex_swaps
-            WHERE token_in LIKE lower('{token_in}') AND token_out LIKE '{token_out}'
+            WHERE token_in LIKE lower('{token_in}') AND token_out LIKE lower('{token_out}')
             AND amount_out > 0 
             AND block_timestamp  > dateadd('month', -1*{time}, current_date)
             GROUP BY 1, 2
