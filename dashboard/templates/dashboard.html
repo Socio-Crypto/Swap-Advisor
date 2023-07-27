@@ -131,7 +131,14 @@
                   <td>{{ item.median_of_exch_rate|floatformat:4 }}</td>
                   <td>{{ item.average_of_exch_rate|floatformat:4 }}</td>
                   <td>{{ item.avg_gas_used|floatformat:0|intcomma }}</td>
-                  <td>{{ item.avg_tx_fee|floatformat:4 }}</td>
+                  <td>{{ item.avg_tx_fee|floatformat:4 }} 
+                    <img src="{% static 'images/' %}{{ network }}.svg" alt="" 
+                        width=
+                          "{% if network == 'ethereum' %} 12
+                          {% elif network == 'polygon' %} 20 
+                          {% elif network == 'avalanche' %} 10 
+                          {% endif %}">
+                  </td>
                   <td>{{ item.number_of_swaps|floatformat:0|intcomma }}</td>
                   <td>{{ item.number_of_swappers|floatformat:0|intcomma }}</td>
                 </tr>
@@ -407,6 +414,9 @@
 
     var success_list = Object.values(dataArray);
     var success_labels = dataArray.map(item => item.x);;
+
+    var minData = success_list.reduce((prev, curr) => (prev.y < curr.y ? prev : curr))['y'];
+    var maxData = success_list.reduce((prev, curr) => (prev.y > curr.y ? prev : curr))['y'];
     var options = {
       series: [
         {
@@ -494,8 +504,9 @@
         //   show: false,
         // },
         forceNiceScale: true,
-      //   min: 0,
-      // max: 0.08,
+        // logarithmic: true, 
+        min: minData,
+        max: maxData,
         labels: {
           show: true,
           formatter: function (val) {
@@ -511,9 +522,6 @@
             color: ['white']
           },
         },
-        min: min_1,
-        // max: max_1
-        // logarithmic: true,
       },
       legend:{
         show:false,
@@ -553,15 +561,15 @@
 <script>
   var dataText = document.getElementById("median").value.replaceAll("'", '"');
   var id = '#medium_rate_per_platform'
-  bar_chart_api_1(dataText, id, 3, 3, '', 0.074)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0)
  
   var dataText = document.getElementById("average").value.replaceAll("'", '"');
   var id = '#average_of_exchange_rate'
-  bar_chart_api_1(dataText, id, 3, 3, '', 0.073)
+  bar_chart_api_1(dataText, id, 3, 3, '', 0)
  
   var dataText = document.getElementById("gas_used").value.replaceAll("'", '"');
   var id = '#average_gas_used'
-  bar_chart_api_1(dataText, id, 0, 0, '', 100000 )
+  bar_chart_api_1(dataText, id, 0, 0, '', 0 )
  
   var network = document.getElementById("network").value.replaceAll("'", '"');
   var y_title
