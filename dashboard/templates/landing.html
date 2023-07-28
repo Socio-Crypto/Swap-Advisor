@@ -160,7 +160,7 @@
                 <div class="col-xl-12 col-lg-12 col-md-12">
                   <div class="card">
                     <div class="body">
-                      <div class="card bridge-card" style="border-color: #343f55;">
+                      <div class="card bridge-card" style="border-color: #343f55;     height: auto;">
                         <input type="hidden" id="avalanche_symbols" value="{{ avalanche }}">
                         <input type="hidden" id="polygon_symbols" value="{{ polygon }}">
                         <input type="hidden" id="ethereumn_symbols" value="{{ ethereum }}">
@@ -211,11 +211,11 @@
                         <span class="bridge-span" style="color: #343f55;">To</span>
                       </div>
 
-                      <div class="diagram" id="bridge_diagram" >
+                      <div class="diagram" id="bridge_diagram" style="height: auto;">
     
                           <div class="card green-card" style="border-color: #FF9F00;">
                             <div class="row" style=" align-items: baseline; place-content: center;">
-                              <p class="dex highest-return-dex" id="bridge_route_1" style="color: #00877d;">dex</p>
+                              <p class="dex highest-return-dex" id="bridge_route_1" style="color: #00877d;"></p>
                               <p class="dex highest-return-dex" id="bridge_route_2" style="color: #00877d;">dex</p>
                             </div>
                             <span class="green-span" style="color: #FF9F00;">Route</span>
@@ -574,7 +574,7 @@ function redirectToURL() {
 <script>
 
   $(document).ready(function() {
-  
+    
     function sendAjaxRequest() {
       // Get the values from the input fields
       var network1 = document.getElementById('bridge_network_1').value;
@@ -605,13 +605,38 @@ function redirectToURL() {
             const bridge_diagram = document.getElementById('bridge_diagram');
             const bridge_route_1 = document.getElementById('bridge_route_1');
             const bridge_route_2 = document.getElementById('bridge_route_2');
-           
-            console.log(response['path_1'])
-            bridge_route_1.textContent = response['path_1'];
-            bridge_route_2.textContent = response['path_2'];
+            
+            bridge_route_1.innerHTML = '';
+
+            response['path_1'].forEach(function(item) {
+              // Create a new paragraph element for each item
+              const itemElement = document.createElement('p');
+
+              // Set the text content of the paragraph to the item value
+              itemElement.textContent = item;
+              itemElement.style.fontSize = 'medium';
+              itemElement.style.marginBottom = '4px';
+              // Append the paragraph element to the container
+              bridge_route_1.appendChild(itemElement);
+            });
+
+            bridge_route_2.innerHTML = '';
+            response['path_2'].forEach(function(item) {
+              // Create a new paragraph element for each item
+              const itemElement = document.createElement('p');
+
+              // Set the text content of the paragraph to the item value
+              itemElement.textContent = item;
+              itemElement.style.fontSize = 'medium';
+              itemElement.style.marginBottom = '4px';
+              // Append the paragraph element to the container
+              bridge_route_2.appendChild(itemElement);
+            });
+            // bridge_route_1.textContent = response['path_1'];
+            // bridge_route_2.textContent = response['path_2'];
            
             // Show the diagram
-            bridge_diagram.style.display = 'flex';
+            bridge_diagram.style.display = 'block';
             
           },
           error: function(xhr, status, error) {

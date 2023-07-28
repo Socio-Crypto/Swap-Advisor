@@ -87,9 +87,30 @@ def dijkstra(graph, start_node, goal_node):
 def print_path(path):
     routes = []
     for node1, node2, dex in path:
-        routes.append(f"{node1}-->{node2} ({dex})")
-        print(f"{node1}-->{node2} ({dex})")
+        routes.append(f"{node1}------({dex})------>{node2}")
     return routes
+
+def get_symbols(networks):
+
+    symbols = {}
+    for network in networks:
+        with open(f'{network}.json', 'r') as infile:
+            data_list = json.load(infile)
+            unique_symbols = set()
+            for data in data_list:
+                try:
+                    if data["symbol_in"] is not None and not isinstance(data["symbol_in"], float) and len(data["symbol_in"]) < 10:
+                        unique_symbols.add(data["symbol_in"])
+                    if data["symbol_out"] is not None and not isinstance(data["symbol_out"], float) and len(data["symbol_out"]) < 10:
+                        unique_symbols.add(data["symbol_out"])
+                except:
+                    print(data)
+            unique_symbols_in_list = list(unique_symbols)
+            symbols[network] = unique_symbols_in_list
+
+    with open(f'symbols.json', "w") as f:
+        json.dump(symbols, f)
+
 
 class SaveDataInJsonView(View):
 
@@ -101,6 +122,8 @@ class SaveDataInJsonView(View):
             data = get_routes(network)
             with open(f'{network}.json', "w") as f:
                 json.dump(data, f)
+
+        get_symbols(networks)
 
         return HttpResponse('The JSON files have been updated with new data!')
 
@@ -148,6 +171,7 @@ def get_dijkstra_fr_algorithm(network_1_path, token_1, token_2):
 
 
 def find_path(request):
+
     if request.method == 'POST':
         context = {}
         network_1 = request.POST.get('bridge_network_1')
@@ -158,23 +182,6 @@ def find_path(request):
         network_1_path = read_data_from_json(network_1)
         network_2_path = read_data_from_json(network_2)
 
-        # try:
-        #     network_1_paths, b, c = networkx_path(network_1_path, token_1, 'axlUSDC')
-        #     print(network_1_paths, b, c)
-        # except: 
-        #     pass
-        # print('--------------------------------------------')
-        # try:
-        #     network_2_paths, d, e = networkx_path(network_2_path, 'axlUSDC', token_2)
-        #     print(network_2_paths, d, e)
-        # except:
-        #     pass
-        
-        # network_1_paths, b, c = networkx_path(network_1_path, token_1, 'axlUSDC')
-        # print(network_1_paths, b, c)
-        # print('--------------------------------------------')
-        # network_2_paths, d, e = networkx_path(network_2_path, 'axlUSDC', token_2)
-        # print(network_2_paths, d, e)
         try:
             context['path_1'] = get_dijkstra_fr_algorithm(network_1_path, token_1, 'axlUSDC')
         except:
@@ -183,7 +190,6 @@ def find_path(request):
             context['path_2'] = get_dijkstra_fr_algorithm(network_2_path, 'axlUSDC', token_2)
         except:
             context['path_2'] = f'There is no Path for {token_2}'
-
         
         return JsonResponse(context , safe=False)
 

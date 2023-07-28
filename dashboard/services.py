@@ -5,7 +5,7 @@ from flipside import Flipside
 
 def get_result_from_query(sql_query):
     
-    flipside = Flipside("0aa823ca-fc7c-485a-9412-4d96b04e54be", "https://api-v2.flipsidecrypto.xyz")
+    flipside = Flipside("693499b7-8af2-4914-a193-5d13085ee9be", "https://api-v2.flipsidecrypto.xyz")
     result = flipside.query(sql_query)
 
     activity_data = {}
