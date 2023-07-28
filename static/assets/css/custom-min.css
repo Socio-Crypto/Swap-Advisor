@@ -67,3 +67,10 @@ section.content::before {
 .bootstrap-select>.dropdown-toggle {
 	color: white;
 }
+
+.swap_svg {
+	text-align: -webkit-center; 
+	margin-top: -31px;
+	margin-bottom: -44px;
+	color: #091f26;
+}
