@@ -63,3 +63,7 @@ section.content::before {
 	max-height: 180.5px !important;
 
 }
+
+.bootstrap-select>.dropdown-toggle {
+	color: white;
+}
