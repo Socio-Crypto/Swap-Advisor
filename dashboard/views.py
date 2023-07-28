@@ -4,17 +4,28 @@ from .services import (data_per_time, median_rate_per_platform, get_stats_table,
 from .concurrency import ConcurrentRunner
 from django.http import JsonResponse
 import json
+# import requests
 
 
 class DashboardView(View):
 
     def get(self, request, network, token_in, token_out, time, dexValue):
         context = {}
-
         runner = ConcurrentRunner()
         func1 = lambda: median_rate_per_platform(network,token_in, token_out, time)
         func2 = lambda: data_per_time(network, token_in, token_out, time)
         results = runner.run_concurrently(func1, func2)
+        # TODO: delete this
+        # results = {}
+        # url_func_1 = "https://api.flipsidecrypto.com/api/v2/queries/bdd8e7b8-a26c-4230-a82b-b1d751cf9750/data/latest"
+        # response = requests.get(url_func_1)
+        # results['func1'] = response.json()
+        
+        # url_func_2 = "https://api.flipsidecrypto.com/api/v2/queries/1adb5a45-1268-4edf-b18c-b4eb1ccecb90/data/latest"
+        # response = requests.get(url_func_2)
+        # results['func2'] = response.json()
+        # # END TODO
+
         data = results['func1']
         context['data'] = data 
         context['median'] = {item['platform']: item['median_of_exch_rate'] for item in data}
@@ -42,10 +53,10 @@ class LandingView(View):
     def get(self, request):
         context = {}
 
-        # runner = ConcurrentRunner()
-        # results = runner.run_concurrently(get_top_10_tokens)
-
-        # context['symbols'] = get_top_10_tokens()
+        with open(f'symbols.json', 'r') as infile:
+            data_list = json.load(infile)
+            for item, values in data_list.items():
+                context[item] = values
 
         return render(request, 'landing.html', context=context)
     

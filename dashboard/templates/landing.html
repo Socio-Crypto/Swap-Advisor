@@ -161,6 +161,13 @@
                   <div class="card">
                     <div class="body">
                       <div class="card bridge-card" style="border-color: #343f55;">
+                        <input type="hidden" id="avalanche_symbols" value="{{ avalanche }}">
+                        <input type="hidden" id="polygon_symbols" value="{{ polygon }}">
+                        <input type="hidden" id="ethereumn_symbols" value="{{ ethereum }}">
+                        <input type="hidden" id="bscn_symbols" value="{{ bsc }}">
+                        <input type="hidden" id="optimism_symbols" value="{{ optimism }}">
+                        <input type="hidden" id="arbitrum_symbols" value="{{ arbitrum }}">
+
                         <div class="row">
                           <div class="col-xl-6 col-lg-6 col-md-6" style="width:93%">
                             <select class="form-control show-tick" id="bridge_network_1">
@@ -172,9 +179,10 @@
                               <option value="optimism"> optimism </option>
                           </select>
                           </div>
-                          <div class="col-xl-6 col-lg-6 col-md-6">
-                            <input type="text" class="form-control" id="bridge_token_1" placeholder="Symbol In"
-                              style="color: white; height: 37px;" />
+                          
+                          <div class="col-xl-6 col-lg-6 col-md-6 custom-dropdown" >
+                            <select class="form-control z-index show-tick" data-live-search="true" id="symbol_in">
+                            </select>
                           </div>
                           
                         </div>
@@ -193,10 +201,12 @@
                               <option value="optimism"> optimism </option>
                           </select>
                           </div>
-                          <div class="col-xl-6 col-lg-6 col-md-6">
-                            <input type="text" class="form-control" id="bridge_token_2" placeholder="Symbol Out"
-                              style="color: white; height: 37px;" />
-                          </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 custom-dropdown" >
+                              <select class="form-control z-index show-tick" data-live-search="true" id="symbol_out">
+                              </select>
+                            </div>
+                            <!-- <input type="text" class="form-control" id="bridge_token_2" placeholder="Symbol Out"
+                              style="color: white; height: 37px;" /> -->
                         </div>
                         <span class="bridge-span" style="color: #343f55;">To</span>
                       </div>
@@ -569,8 +579,8 @@ function redirectToURL() {
       // Get the values from the input fields
       var network1 = document.getElementById('bridge_network_1').value;
       var network2 = document.getElementById('bridge_network_2').value;
-      var token1 = document.getElementById('bridge_token_1').value;
-      var token2 = document.getElementById('bridge_token_2').value;
+      var token1 = document.getElementById('symbol_in').value;
+      var token2 = document.getElementById('symbol_out').value;
   
       // Check if both fields are filled
       if (token1 && token2) {
@@ -616,12 +626,62 @@ function redirectToURL() {
     // Add event listeners to the input fields
     document.getElementById('bridge_network_1').addEventListener('change', sendAjaxRequest);
     document.getElementById('bridge_network_2').addEventListener('change', sendAjaxRequest);
-    document.getElementById('bridge_token_1').addEventListener('input', sendAjaxRequest);
-    document.getElementById('bridge_token_2').addEventListener('input', sendAjaxRequest);
+    document.getElementById('symbol_in').addEventListener('change', sendAjaxRequest);
+    document.getElementById('symbol_out').addEventListener('change', sendAjaxRequest);
   
   })
-  </script>
+</script>
 
+<!-- select - symbols -->
+<script>
+
+  function sanitizeInput(input) {
+    return input.replace(/[^\x20-\x7E]/g, ''); // Removes any non-printable characters
+  }
+
+  function updateSymbolsOptions(network_symbols_id, select_id){
+    console.log(network_symbols_id, select_id)
+    var dataText_x = document.getElementById(network_symbols_id).value.replaceAll("'", '"');
+    dataText_x = sanitizeInput(dataText_x);
+
+    var dataArray = JSON.parse(dataText_x);
+
+    // Get the select element
+    var $select = $(select_id);
+    $select.empty();
+    
+    // Loop through the data array and add options to the select element
+    dataArray.forEach(function(item) {
+      $select.append('<option>' + item + '</option>');
+    });
+  
+    // Initialize the Bootstrap Select plugin
+    $select.selectpicker('refresh');
+  }
+
+  function trigger_select_symbols(symbol_select_id, network_select_id){
+    var network1 = document.getElementById(network_select_id).value;
+
+    updateSymbolsOptions(network1 + "_symbols", symbol_select_id)
+    console.log('trigger')
+
+  }
+
+  $(document).ready(function() {
+    // Get the data array from the hidden input
+    updateSymbolsOptions("avalanche_symbols", '#symbol_in')
+    updateSymbolsOptions("polygon_symbols", '#symbol_out')
+
+    document.getElementById('bridge_network_1').addEventListener('change', function() {
+      trigger_select_symbols('#symbol_in', 'bridge_network_1')
+    });
+    document.getElementById('bridge_network_2').addEventListener('change', function() {
+      trigger_select_symbols('#symbol_out', 'bridge_network_2')
+    });
+
+  });
+</script>
+<!-- End select - symbols -->
 
 <!-- End Bridge -->
 {% endblock %}
