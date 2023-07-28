@@ -185,11 +185,11 @@ def find_path(request):
         try:
             context['path_1'] = get_dijkstra_fr_algorithm(network_1_path, token_1, 'axlUSDC')
         except:
-            context['path_1'] = f'There is no Path for {token_1}'
+            context['path_1'] = [f'There is no Path for {token_1}']
         try:
             context['path_2'] = get_dijkstra_fr_algorithm(network_2_path, 'axlUSDC', token_2)
         except:
-            context['path_2'] = f'There is no Path for {token_2}'
+            context['path_2'] = [f'There is no Path for {token_2}']
         
         return JsonResponse(context , safe=False)
 
