@@ -119,7 +119,14 @@
                   <th scope="col">Median of Exch. Rate</th>
                   <th scope="col">Avg. of Exch. Rate</th>
                   <th scope="col">Avg. gas used</th>
-                  <th scope="col">Avg. tx_fee</th>
+                  <th scope="col">Avg. tx_fee
+                    <img src="{% static 'images/' %}{{ network }}.svg" alt="" 
+                    width=
+                      "{% if network == 'ethereum' %} 17
+                      {% elif network == 'polygon' %} 25 
+                      {% elif network == 'avalanche' %} 15 
+                      {% endif %}">
+                  </th>
                   <th scope="col">Number of Swaps</th>
                   <th scope="col">Number of Swappers</th>
                 </tr>
@@ -131,14 +138,7 @@
                   <td>{{ item.median_of_exch_rate|floatformat:4 }}</td>
                   <td>{{ item.average_of_exch_rate|floatformat:4 }}</td>
                   <td>{{ item.avg_gas_used|floatformat:0|intcomma }}</td>
-                  <td>{{ item.avg_tx_fee|floatformat:4 }} 
-                    <img src="{% static 'images/' %}{{ network }}.svg" alt="" 
-                        width=
-                          "{% if network == 'ethereum' %} 12
-                          {% elif network == 'polygon' %} 20 
-                          {% elif network == 'avalanche' %} 10 
-                          {% endif %}">
-                  </td>
+                  <td>{{ item.avg_tx_fee|floatformat:4 }} </td>
                   <td>{{ item.number_of_swaps|floatformat:0|intcomma }}</td>
                   <td>{{ item.number_of_swappers|floatformat:0|intcomma }}</td>
                 </tr>

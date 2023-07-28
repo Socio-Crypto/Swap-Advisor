@@ -137,7 +137,9 @@
                             <th style="color:white">Median of Exch. Rate</th>
                             <th style="color:white">Avg. Exch. Rate</th>
                             <th style="color:white">Avg. gas used</th>
-                            <th style="color:white">Avg. tx_fee</th>
+                            <th style="color:white">Avg. tx_fee
+                              <img src="{% static 'images/avalanche.svg' %}" alt="" width=15>
+                            </th>
                             <th style="color:white">Number of Swaps</th>
                             <th style="color:white">Number of Swappers</th>
                           </tr>
@@ -208,8 +210,10 @@
                             </div>
                             <span class="green-span" style="color: #FF9F00;">Route</span>
                           </div>
-                         
-    
+                      </div>
+
+                      <div class="row clearfix spin_div" id="spinner_bridge">
+                        <span class="loader" id="loadingSpinner_bridge"></span>
                       </div>
 
                       <div class="row clearfix">
@@ -239,32 +243,29 @@
 <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<script>
-  // Initialize Select2 on the dropdown element
-  $(document).ready(function() {
-    $("#dropdown").selectize();
-  });
-</script>
 
 <script>
-
-$(document).ready(function() {
-
-  function showLoadingSpinner() {
-    const spinner = document.getElementById('loadingSpinner');
+  function showLoadingSpinner(id, div_id) {
+    const spinner = document.getElementById(id);
     spinner.style.display = 'block';
     
-    const spinner_div = document.getElementById('spin_div');
+    const spinner_div = document.getElementById(div_id);
     spinner_div.style.display = 'flex';
     
   }
 
-  function hideLoadingSpinner() {
-    const spinner = document.getElementById('loadingSpinner');
+  function hideLoadingSpinner(id, div_id) {
+    const spinner = document.getElementById(id);
     spinner.style.display = 'none';
-    const spinner_div = document.getElementById('spin_div');
+    const spinner_div = document.getElementById(div_id);
     spinner_div.style.display = 'none';
   }
+</script>
+<script>
+
+$(document).ready(function() {
+
+  
 
   function clearTable() {
     let table = document.getElementById("ListTable");
@@ -288,7 +289,7 @@ $(document).ready(function() {
       const button_div = document.getElementById('more_details');
       button_div.style.display = 'none';
 
-    showLoadingSpinner()
+    showLoadingSpinner('loadingSpinner', 'spin_div')
     clearTable();
 
      var data = {
@@ -311,7 +312,7 @@ $(document).ready(function() {
           csrfmiddlewaretoken: '{{ csrf_token }}',
         },
         success: function(response) {
-          hideLoadingSpinner()
+          hideLoadingSpinner('loadingSpinner', 'spin_div')
           const diagram = document.getElementById('diagram');
           const error_1 = document.getElementById('error_route');
           // const tokenInSymbol = document.getElementById('tokenIn');
@@ -418,6 +419,7 @@ function redirectToURL() {
    
 
 
+
       // Append cells to row
       row.appendChild(c1);
       row.appendChild(c2);
@@ -498,6 +500,29 @@ function redirectToURL() {
       c6.innerText = "Number of Swaps"
       c7.innerText = "Number of Swappers"
       
+            
+    var network = document.getElementById('network').value;
+     let image = document.createElement("img")
+
+     let source;
+     if(network == 'avalanche'){
+       source = "{% static 'images/' %}" + network + ".svg"
+       image.style.marginLeft = "4px";
+       image.setAttribute("width", 15)
+     } else if (network == 'polygon'){
+       source = "{% static 'images/' %}" + network + ".svg"
+       image.setAttribute("width", 25)
+     } else if (network == 'ethereum'){
+      source = "{% static 'images/' %}" + network + ".svg"
+      image.style.marginLeft = "4px";
+      image.setAttribute("width", 17)
+     }
+
+     image.setAttribute("src", source)
+     
+     c5.appendChild(image)
+  
+
       // Append cells to row
       row.appendChild(c1);
       row.appendChild(c2);
@@ -540,22 +565,6 @@ function redirectToURL() {
 
   $(document).ready(function() {
   
-    function showLoadingSpinner() {
-      const spinner = document.getElementById('loadingSpinner');
-      spinner.style.display = 'block';
-      
-      const spinner_div = document.getElementById('spin_div');
-      spinner_div.style.display = 'flex';
-      
-    }
-  
-    function hideLoadingSpinner() {
-      const spinner = document.getElementById('loadingSpinner');
-      spinner.style.display = 'none';
-      const spinner_div = document.getElementById('spin_div');
-      spinner_div.style.display = 'none';
-    }
-
     function sendAjaxRequest() {
       // Get the values from the input fields
       var network1 = document.getElementById('bridge_network_1').value;
@@ -566,19 +575,8 @@ function redirectToURL() {
       // Check if both fields are filled
       if (token1 && token2) {
         bridge_diagram.style.display = 'none';
-        // const button_div = document.getElementById('more_details');
-        // button_div.style.display = 'none';
-  
-      // showLoadingSpinner()
-  
-      //  var data = {
-      //     bridge_network_1: network1,
-      //     bridge_network_2: network2,
-      //     bridge_token_1: token1,
-      //     bridge_token_2: token2,
-      //     csrfmiddlewaretoken: '{{ csrf_token }}'
-      //   };
-  
+        showLoadingSpinner('loadingSpinner_bridge', 'spinner_bridge')
+
         $.ajax({
           method: 'POST',
           url: "{% url 'find_path' %}",
@@ -591,27 +589,16 @@ function redirectToURL() {
             csrfmiddlewaretoken: '{{ csrf_token }}'
           },
           success: function(response) {
-            // hideLoadingSpinner()
+            // ()
+            hideLoadingSpinner('loadingSpinner_bridge', 'spinner_bridge')
+
             const bridge_diagram = document.getElementById('bridge_diagram');
             const bridge_route_1 = document.getElementById('bridge_route_1');
             const bridge_route_2 = document.getElementById('bridge_route_2');
-            // const tokenOutSymbol = document.getElementById('tokenOut');
-            // const dexValue = document.getElementById('dexValue');
-            // const routeValue = document.getElementById('route_value');
-            
-            // const dexValue_2 = document.getElementById('dexValue_2');
-            // const routeValue_2 = document.getElementById('route_value_2');
-  
-            // tokenInSymbol.textContent = tokenInValue;
-            // tokenOutSymbol.textContent = tokenOutValue;
+           
             console.log(response['path_1'])
             bridge_route_1.textContent = response['path_1'];
             bridge_route_2.textContent = response['path_2'];
-            // routeValue.textContent = response['median'].toFixed(5);
-            
-            // dexValue_2.textContent = response['platform_2'];
-            // routeValue_2.textContent = response['median_2'].toFixed(5);
-            
            
             // Show the diagram
             bridge_diagram.style.display = 'flex';
@@ -635,19 +622,6 @@ function redirectToURL() {
   })
   </script>
 
-<!-- <script>
-  document.addEventListener("DOMContentLoaded", function() {
-  // Get the select element by its ID
-  var selectElement = document.getElementById("bridge_network_1");
-
-  // Attach a change event listener to the select element
-  selectElement.addEventListener("change", function() {
-    // Get the selected option value
-    var selectedValue = this.value;
-    console.log('testststststts')
-  });
-});
-</script> -->
 
 <!-- End Bridge -->
 {% endblock %}
